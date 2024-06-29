@@ -33,12 +33,12 @@ export default {
         screen: { raw: 'screen' },
       },
       colors: {
-        bgColor: "rgb(var(--theme-bg) / <alpha-value>)",
-        textColor: "rgb(var(--theme-text) / <alpha-value>)",
-        link: "rgb(var(--theme-link) / <alpha-value>)",
-        accent: "rgb(var(--theme-accent) / <alpha-value>)",
-        "accent-2": "rgb(var(--theme-accent-2) / <alpha-value>)",
-        quote: "rgb(var(--theme-quote) / <alpha-value>)",
+        bgColor: "rgba(var(--theme-bg))",
+        textColor: "rgba(var(--theme-text))",
+        link: "rgba(var(--theme-link))",
+        accent: "rgba(var(--theme-accent))",
+        "accent-2": "rgba(var(--theme-accent-2))",
+        quote: "rgba(var(--theme-quote))",
         ngray: {
           'txt-light': '#9B9A97',
           'txt-dark': '#979A9B',
@@ -120,7 +120,7 @@ export default {
     plugin(function ({ addComponents }) {
       addComponents({
         ".webtrotion-page-link": {
-          "@apply underline decoration-wavy decoration-accent-2/20 hover:decoration-accent-2/40 underline-offset-2 hover:underline": {}
+          "@apply underline decoration-dashed decoration-accent-2/20 hover:decoration-accent-2/40 underline-offset-2 hover:underline": {}
         },
         ".title": {
           "@apply text-3xl font-bold text-accent-2": {},

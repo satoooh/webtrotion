@@ -14,7 +14,7 @@ export interface Props {
 const { block, headings, renderChildren = true, setId=true } = Astro.props;
 ---
 
-<ul class="list-outside list-disc space-y-1 pl-6" id={setId?block.Id:undefined}>
+<ul class="list-outside list-disc space-y-1 pl-6 leading-[2.05]" id={setId?block.Id:undefined}>
 	{
 		block.ListItems.filter((b: interfaces.Block) => b.Type === "bulleted_list_item").map(
 			(b: interfaces.Block) => (

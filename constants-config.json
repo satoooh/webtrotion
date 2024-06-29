@@ -4,13 +4,14 @@
   "public-ga-tracking-id": "",
   "google-search-console-html-tag": "",
   "socials": {
-    "email": "",
-    "github": "",
+    "email": "mail@satoooh.org",
+    "github": "https://github.com/satoooh",
     "googlescholar": "",
     "semanticscholar": "",
     "dblp": "",
     "facebook": "",
-    "twitter": "",
+    "twitter": "https://x.com/9Satoooh",
+    "bluesky": "https://bsky.app/profile/satoooh.org",
     "threads": "",
     "instagram": "",
     "mastodon": "",
@@ -41,32 +42,32 @@
     "expressive-code": {"start":"<<expressive-code-start>>", "end":"<<expressive-code-end>>"},
     "shiki-transform": "<<shiki-transform>>"
   },
-  "recent-posts-on-home-page": false,
+  "recent-posts-on-home-page": true,
   "theme": {
     "colors": {
       "bg": {
-        "light": "249 249 249",
-        "dark": "28 30 32"
+        "light": "255, 255, 255",
+        "dark": "26, 26, 28"
       },
       "text": {
-        "light": "34 39 42",
-        "dark": "255 255 255"
+        "light": "56, 62, 69",
+        "dark": "230, 230, 230"
       },
       "link": {
-        "light": "85 123 118",
-        "dark": "199 200 203"
+        "light": "38, 74, 244",
+        "dark": "199, 200, 203"
       },
       "accent": {
-        "light": "203 41 65",
-        "dark": "41 188 136"
+        "light": "38, 74, 244",
+        "dark": "87, 184, 255"
       },
       "accent-2": {
-        "light": "17 17 17",
-        "dark": "237 237 237"
+        "light": "17, 17, 17",
+        "dark": "237, 237, 237"
       },
       "quote": {
-        "light": "203 41 65",
-        "dark": "205 254 183"
+        "light": "203, 41, 65",
+        "dark": "205, 254, 183"
       }
     },
     "fontfamily-google-fonts": {
@@ -97,10 +98,10 @@
   "og-setup": {
     "columns": 1,
     "excerpt": false,
-    "title-font-url":"https://fonts.googleapis.com/css2?family=Kreon:wght@500&display=swap",
-    "footnote-font-url":"https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@700&display=swap"
+    "title-font-url":"https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap",
+    "footnote-font-url":"https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap"
   },
-  "full-width-tweet-embeds": false,
+  "full-width-tweet-embeds": true,
   "optimize-images": true,
   "redirects": {}
 }
