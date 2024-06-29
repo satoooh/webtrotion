@@ -81,8 +81,8 @@
     "webmention-api-key": "",
     "webmention-link": ""
   },
-  "number-of-posts-per-page": 10,
-  "enable-lightbox": true,
+  "number-of-posts-per-page": 20,
+  "enable-lightbox": false,
   "request-timeout-ms": "10000",
   "menu-pages-collection": "main",
   "heading-blocks": [
