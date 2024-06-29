@@ -1,7 +1,7 @@
 {
   "database-id": "d3ce88884eb2490db078adb74a1440e8",
   "author": "satoooh",
-  "public-ga-tracking-id": "",
+  "public-ga-tracking-id": "349111766",
   "google-search-console-html-tag": "",
   "socials": {
     "email": "mail@satoooh.org",
@@ -17,7 +17,7 @@
     "mastodon": "",
     "this-github-repo": ""
   },
-  "custom-domain": "",
+  "custom-domain": "satoooh.org",
   "base-path": "",
   "giscus": {
     "data-repo": "satoooh/webtrotion-astro-notion-cms-website-blog",
