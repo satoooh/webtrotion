@@ -18,7 +18,7 @@ const titleSeparator = "•";
 const siteTitle = `${title} ${titleSeparator} ${siteInfo.title}`;
 const canonicalURL = new URL(Astro.url.pathname, Astro.site);
 const socialImageURL = new URL(getNavLink(ogImage ? ogImage : `/og-image/${HOME_PAGE_SLUG}.png`), Astro.url).href;
-const faviconLink = getNavLink("/favicon.ico")
+const faviconLink = `${Astro.site}/favicon.ico`;
 
 ---
 
@@ -57,7 +57,7 @@ const faviconLink = getNavLink("/favicon.ico")
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:site_name" content={siteInfo.title} />
 <meta property="og:locale" content={siteInfo.ogLocale} />
-<meta property="og:image" content={`${Astro.url}og-image.png`} />
+<meta property="og:image" content={`${Astro.site}og-image.png`} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="600" />
 
@@ -78,7 +78,7 @@ const faviconLink = getNavLink("/favicon.ico")
 {
   GOOGLE_SEARCH_CONSOLE_META_TAG && (<meta name="google-site-verification" content={GOOGLE_SEARCH_CONSOLE_META_TAG} />)
 }
-<meta property="twitter:image" content={`${Astro.url}og-image.png`} />
+<meta property="twitter:image" content={`${Astro.site}og-image.png`} />
 
 {/* Sitemap */}
 <link rel="sitemap" href="/sitemap-index.xml" />
