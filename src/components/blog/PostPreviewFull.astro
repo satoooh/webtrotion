@@ -73,8 +73,8 @@ const postLink = getPostLink(
 			{post_full_preview.Tags.map((tag, i) => (
 				<>
 					<a
-						class={`inline-block rounded-md border text-sm ${getNotionColorToTailwindColor(
-							tag.color + "-background",
+						class={`inline-block rounded-md text-sm ${getNotionColorToTailwindColor(
+							tag.color + "-background", true
 						)}`}
 						aria-label={`View more blogs with the tag ${tag.name}`}
 						href={getNavLink("/tags/" + slugify(tag.name) + "/")}
