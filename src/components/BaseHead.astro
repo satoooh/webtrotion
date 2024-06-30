@@ -6,7 +6,7 @@ import "../styles/global.css";
 import { siteInfo } from "@/siteInfo";
 import {ENABLE_LIGHTBOX, PUBLIC_GA_TRACKING_ID, THEME, GOOGLE_SEARCH_CONSOLE_META_TAG } from "@/constants";
 import GoogleFontsOptimizer from "@/components/GoogleFontsOptimizer";
-import { HOME_PAGE_SLUG } from "@/constants";
+import { CUSTOM_DOMAIN, HOME_PAGE_SLUG } from "@/constants";
 import { getNavLink } from "@/lib/blog-helpers";
 const theme_config_font_url = THEME['fontfamily-google-fonts']['combined-url'];
 
@@ -57,7 +57,7 @@ const faviconLink = getNavLink("/favicon.ico")
 <meta property="og:url" content={canonicalURL} />
 <meta property="og:site_name" content={siteInfo.title} />
 <meta property="og:locale" content={siteInfo.ogLocale} />
-<meta property="og:image" content="og-image.png" />
+<meta property="og:image" content={`${Astro.url}og-image.png`} />
 <meta property="og:image:width" content="1200" />
 <meta property="og:image:height" content="600" />
 
@@ -78,7 +78,7 @@ const faviconLink = getNavLink("/favicon.ico")
 {
   GOOGLE_SEARCH_CONSOLE_META_TAG && (<meta name="google-site-verification" content={GOOGLE_SEARCH_CONSOLE_META_TAG} />)
 }
-{ogImage && (<meta property="twitter:image" content={socialImageURL} />)}
+<meta property="twitter:image" content={`${Astro.url}og-image.png`} />
 
 {/* Sitemap */}
 <link rel="sitemap" href="/sitemap-index.xml" />
