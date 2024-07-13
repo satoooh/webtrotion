@@ -11,6 +11,10 @@ import type { Post } from "../lib/interfaces";
 import { siteInfo } from "@/siteInfo";
 import { FULL_PREVIEW_COLLECTIONS, HIDE_UNDERSCORE_SLUGS_IN_LISTS, HOME_PAGE_SLUG, RECENT_POSTS_ON_HOME_PAGE } from "@/constants";
 import PostPreview from "@/components/blog/PostPreview.astro";
+import Icon from "@/components/Icon.astro";
+import { buildHeadings } from "@/utils";
+import TOC from "@/components/blog/TOC";
+
 
 export async function getStaticPaths() {
 	const pages = await getAllPages();
@@ -31,6 +35,7 @@ const { page } = Astro.props;
 let pageFound = true;
 let blocks = null;
 let referencesInPage = null;
+let headings = null;
 
 if (!page) {
 	console.log("Page not found");
@@ -45,7 +50,7 @@ if (pageFound) {
 	const result = await getPostContentByPostId(page);
   blocks = result.blocks;
   referencesInPage = result.referencesInPage;
-
+  headings = buildHeadings(blocks);
 
 	const fileAtacchedBlocks = extractTargetBlocks(["image","video","file","audio"], blocks)
 		.filter((block) => {
@@ -72,6 +77,14 @@ if (pageFound && page.Slug==HOME_PAGE_SLUG && RECENT_POSTS_ON_HOME_PAGE)
     recent_posts = recent_posts.filter((post) => !post.Slug.startsWith("_"));
 		}
     recent_posts = recent_posts.slice(0, 5); // Slice to get only the first five posts
+    if (recent_posts && headings)
+    {
+      headings.push({
+			text: "Recent Posts",
+			slug: "auto-recent-posts",
+			depth: 1,
+	  })
+    }
 }
 ---
 
@@ -90,6 +103,7 @@ if (pageFound && page.Slug==HOME_PAGE_SLUG && RECENT_POSTS_ON_HOME_PAGE)
 			<div class="">
 				<NotionBlocks blocks={blocks} isRoot={true} />
 			</div>
+      {headings && !!headings.length && <TOC headings={headings} />}
 		</article>
 	</div>
 {RECENT_POSTS_ON_HOME_PAGE && recent_posts && (
@@ -124,24 +138,14 @@ if (pageFound && page.Slug==HOME_PAGE_SLUG && RECENT_POSTS_ON_HOME_PAGE)
         )}
       </PageLayout>
 
-<button
-	id="to-top-btn"
-	class="z-30 print:hidden fixed bottom-8 end-4 flex h-10 w-10 translate-y-28 items-center justify-center rounded-full border-2 border-transparent bg-zinc-200 text-3xl opacity-0 transition-all duration-300 hover:border-zinc-400 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 dark:bg-zinc-700 sm:end-8 sm:h-12 sm:w-12"
-	aria-label="Back to Top"
-	data-show="false"
-	><svg
-		xmlns="http://www.w3.org/2000/svg"
-		aria-hidden="true"
-		focusable="false"
-		fill="none"
-		viewBox="0 0 24 24"
-		stroke-width="2"
-		stroke="currentColor"
-		class="h-6 w-6"
+  <button
+		id="to-top-btn"
+		class={"z-30 fixed print:hidden bottom-20 sm:bottom-8 end-4 flex h-10 w-10 translate-y-28 items-center justify-center rounded-full border-2 border-transparent bg-zinc-200 text-3xl opacity-0 transition-all duration-300 hover:border-zinc-400 data-[show=true]:translate-y-0 data-[show=true]:opacity-100 dark:bg-zinc-700 sm:end-8 sm:h-12 sm:w-12"}
+		aria-label="Back to Top"
+		data-show="false"
 	>
-		<path stroke-linecap="round" stroke-linejoin="round" d="M4.5 15.75l7.5-7.5 7.5 7.5"></path>
-	</svg>
-</button>
+		<Icon name={"to-top"} class="h-6 w-6" aria-label="Go Back to Top" stroke-linecap="round" />
+	</button>
 </>
 
 <script>
