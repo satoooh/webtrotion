@@ -42,7 +42,7 @@ const plainTextCaption = block.NImage?.Caption.map((richText) => richText.PlainT
 					</a>
 				) : (
 					<img
-						class="imagemedia block max-w-full rounded-md"
+						class="imagemedia block max-w-full rounded-md border border-black/10"
 						src={image}
 						loading={getFirstImage() ? "eager" : "lazy"}
 						alt={plainTextCaption}
