@@ -1,6 +1,6 @@
 const dateOptions = {
 	date: {
-		locale: "en",
+		locale: "ja-JP",
 		options: {
 			day: "numeric",
 			month: "short",
