@@ -1,6 +1,7 @@
 ---
 import type { Block } from "@/lib/interfaces";
 import NotionBlocks from "../../NotionBlocks.astro";
+import { ALL_FOOTNOTES_PAGE_SLUG } from "@/constants";
 interface Props {
 	block: Block;
 	linkedTo: string;
@@ -18,6 +19,11 @@ const {
 	font = "",
 } = Astro.props;
 let id = "id" + Math.random().toString(16).slice(2) + "---" + block.Id;
+let isFootnote = false;
+const footnotePattern = "posts/" + ALL_FOOTNOTES_PAGE_SLUG;
+if (linkedTo && (linkedTo.includes(footnotePattern + "/") || linkedTo.endsWith(footnotePattern))) {
+	isFootnote = true;
+}
 ---
 
 <span
@@ -38,36 +44,46 @@ let id = "id" + Math.random().toString(16).slice(2) + "---" + block.Id;
 		role="tooltip"
 		class="popoverEl invisible absolute z-40 inline-block hidden w-72 rounded-lg border border-gray-200 bg-white text-sm text-gray-500 opacity-0 shadow-sm transition-opacity duration-300 dark:border-gray-600 dark:bg-gray-800 dark:text-gray-400"
 	>
-		<a href={linkedTo}>
-			<div class="space-y-2 p-3">
-				{
-					popoverTitle && (
-						<h3 class="font-semibold text-accent underline decoration-accent-2/20 decoration-wavy">
-							{popoverTitle}
-						</h3>
-					)
-				}
-				<NotionBlocks blocks={[block]} renderChildren={false} setId={false} />
-				<a
-					href={linkedTo}
-					data-popover-link
-					class="flex max-w-full items-center font-medium text-link/90 hover:underline"
-					>{linkText}<svg
-						class="ms-1.5 h-2 w-2 rtl:rotate-180"
-						aria-hidden="true"
-						xmlns="http://www.w3.org/2000/svg"
-						fill="none"
-						viewBox="0 0 6 10"
-					>
-						<path
-							stroke="currentColor"
-							stroke-linecap="round"
-							stroke-linejoin="round"
-							stroke-width="2"
-							d="m1 9 4-4-4-4"></path>
-					</svg></a
-				>
-			</div>
-		</a>
+		{
+			isFootnote ? (
+				<div class="space-y-2 p-3">
+					<NotionBlocks blocks={[block]} renderChildren={false} setId={false} />
+					<span data-popover-link>{""}</span>
+				</div>
+			) : (
+				<a href={linkedTo}>
+					<div class="space-y-2 p-3">
+						{popoverTitle && (
+							<h3 class="font-semibold text-accent underline decoration-accent-2/20 decoration-wavy">
+								{popoverTitle}
+							</h3>
+						)}
+						<NotionBlocks blocks={[block]} renderChildren={false} setId={false} />
+						<a
+							href={linkedTo}
+							data-popover-link
+							class="flex max-w-full items-center font-medium text-link/90 hover:underline"
+						>
+							{linkText}
+							<svg
+								class="ms-1.5 h-2 w-2 rtl:rotate-180"
+								aria-hidden="true"
+								xmlns="http://www.w3.org/2000/svg"
+								fill="none"
+								viewBox="0 0 6 10"
+							>
+								<path
+									stroke="currentColor"
+									stroke-linecap="round"
+									stroke-linejoin="round"
+									stroke-width="2"
+									d="m1 9 4-4-4-4"
+								/>
+							</svg>
+						</a>
+					</div>
+				</a>
+			)
+		}
 	</div>
 </template>

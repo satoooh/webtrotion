@@ -23,11 +23,16 @@ const metascraper = createMetascraper([
 
 let url: URL;
 let metadata: Record<string, string>;
+let notDNSForbidden: boolean;
+notDNSForbidden = true;
 try {
 	url = new URL(urlString);
 	const html = urlMap[urlString];
 	if (html) {
 		metadata = await metascraper({ html, url });
+		if (metadata && metadata.title == "Just a moment...") {
+			notDNSForbidden = false;
+		}
 	}
 } catch (err) {
 	console.log(err);
@@ -36,7 +41,7 @@ try {
 
 <div class="bookmark pb-2" id={setId ? block.Id : undefined}>
 	{
-		url && (
+		url && notDNSForbidden ? (
 			<div class="flex w-full max-w-full overflow-hidden text-sm">
 				<a
 					href={url.toString()}
@@ -45,13 +50,13 @@ try {
 					class="flex w-full min-w-0 max-w-full grow select-none items-stretch overflow-hidden rounded border border-gray-200 no-underline dark:border-gray-800	"
 				>
 					<div class="flex-bookmark-text overflow-hidden p-3 text-left text-textColor/90">
-						<div class="mb-0.5 h-6 overflow-hidden truncate whitespace-nowrap text-base leading-5">
+						<div class="mb-0.5 h-6 overflow-hidden truncate whitespace-nowrap leading-5">
 							{metadata && metadata.title}
 						</div>
 						<div class="h-8 overflow-hidden text-xs leading-4 opacity-80">
 							{metadata && metadata.description}
 						</div>
-						<div class="mt-1.5 flex max-w-full">
+						<div class="mt-1.5 flex max-w-full items-baseline	">
 							<div class="mr-1.5 h-4 w-4 min-w-4">
 								<img
 									class="inline-block max-w-full"
@@ -62,7 +67,7 @@ try {
 								/>
 							</div>
 							<div class="overflow-hidden truncate whitespace-nowrap text-xs leading-4">
-								{url.origin}
+								{url.toString()}
 							</div>
 						</div>
 					</div>
@@ -78,6 +83,32 @@ try {
 							/>
 						</div>
 					)}
+				</a>
+			</div>
+		) : (
+			<div class="flex w-full max-w-full overflow-hidden text-sm">
+				<a
+					href={url.toString()}
+					target="_blank"
+					rel="noopener noreferrer"
+					class="flex w-full min-w-0 max-w-full grow select-none items-stretch overflow-hidden rounded border border-gray-200 no-underline dark:border-gray-800	"
+				>
+					<div class="flex-bookmark-text overflow-hidden p-3 text-left text-textColor/90">
+						<div class="flex max-w-full items-baseline	">
+							<div class="mr-1.5 h-4 w-4 min-w-4">
+								<img
+									class="inline-block max-w-full"
+									loading="lazy"
+									src={`https://www.google.com/s2/favicons?domain=${url.hostname}`}
+									alt="title"
+									decoding="async"
+								/>
+							</div>
+							<div class="overflow-hidden truncate whitespace-nowrap text-xs leading-4">
+								{url.toString()}
+							</div>
+						</div>
+					</div>
 				</a>
 			</div>
 		)

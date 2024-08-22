@@ -1,5 +1,5 @@
 // eslint-disable-next-line prettier/prettier
-export const getNotionColorToTailwindColor = (s: string, colorForDefault: boolean = false) => {
+export const getNotionColorToTailwindColor = (s: string, isTag: boolean = false) => {
 	// Convert snake_case to kebab-case
 	const kebabCase = s.replaceAll("_", "-");
 
@@ -15,21 +15,39 @@ export const getNotionColorToTailwindColor = (s: string, colorForDefault: boolea
 		purple: "text-npurple-txt-light dark:text-npurple-txt-dark",
 		pink: "text-npink-txt-light dark:text-npink-txt-dark",
 		red: "text-nred-txt-light dark:text-nred-txt-dark",
-		default: colorForDefault ? "border border-gray-200 dark:border-gray-700" : "",
+		default: undefined,
 
 		// Background color classes
-		"gray-background": "px-1 rounded bg-ngray-bg-light dark:bg-ngray-bg-dark",
-		"brown-background": "px-1 rounded bg-nbrown-bg-light dark:bg-nbrown-bg-dark",
-		"orange-background": "px-1 rounded bg-norange-bg-light dark:bg-norange-bg-dark",
-		"yellow-background": "px-1 rounded bg-nyellow-bg-light dark:bg-nyellow-bg-dark",
-		"green-background": "px-1 rounded bg-ngreen-bg-light dark:bg-ngreen-bg-dark",
-		"blue-background": "px-1 rounded bg-nblue-bg-light dark:bg-nblue-bg-dark",
-		"purple-background": "px-1 rounded bg-npurple-bg-light dark:bg-npurple-bg-dark",
-		"pink-background": "px-1 rounded bg-npink-bg-light dark:bg-npink-bg-dark",
-		"red-background": "px-1 rounded bg-nred-bg-light dark:bg-nred-bg-dark",
-		"default-background": colorForDefault
-			? "px-1 rounded bg-nlgray-bg-light dark:bg-nlgray-bg-dark"
-			: "",
+		"gray-background": isTag
+			? "bg-ngray-bg-tag-light dark:bg-ngray-bg-tag-dark"
+			: "bg-ngray-bg-light dark:bg-ngray-bg-dark",
+		"brown-background": isTag
+			? "bg-nbrown-bg-tag-light dark:bg-nbrown-bg-tag-dark"
+			: "bg-nbrown-bg-light dark:bg-nbrown-bg-dark",
+		"orange-background": isTag
+			? "bg-norange-bg-tag-light dark:bg-norange-bg-tag-dark"
+			: "bg-norange-bg-light dark:bg-norange-bg-dark",
+		"yellow-background": isTag
+			? "bg-nyellow-bg-tag-light dark:bg-nyellow-bg-tag-dark"
+			: "bg-nyellow-bg-light dark:bg-nyellow-bg-dark",
+		"green-background": isTag
+			? "bg-ngreen-bg-tag-light dark:bg-ngreen-bg-tag-dark"
+			: "bg-ngreen-bg-light dark:bg-ngreen-bg-dark",
+		"blue-background": isTag
+			? "bg-nblue-bg-tag-light dark:bg-nblue-bg-tag-dark"
+			: "bg-nblue-bg-light dark:bg-nblue-bg-dark",
+		"purple-background": isTag
+			? "bg-npurple-bg-tag-light dark:bg-npurple-bg-tag-dark"
+			: "bg-npurple-bg-light dark:bg-npurple-bg-dark",
+		"pink-background": isTag
+			? "bg-npink-bg-tag-light dark:bg-npink-bg-tag-dark"
+			: "bg-npink-bg-light dark:bg-npink-bg-dark",
+		"red-background": isTag
+			? "bg-nred-bg-tag-light dark:bg-nred-bg-tag-dark"
+			: "bg-nred-bg-light dark:bg-nred-bg-dark",
+		"default-background": isTag
+			? "bg-nlgray-bg-tag-light dark:bg-nlgray-bg-tag-dark"
+			: "border border-ngray-callout-border-light dark:border-ngray-callout-border-dark",
 	};
 
 	// Return the Tailwind color classes, defaulting to the input if no mapping is found
@@ -133,6 +151,7 @@ export const getTextToAstroIcon = (text: string) => {
 		menu: "mdi:hamburger-menu",
 		filter: "mdi:filter",
 		"table-search": "mdi:table-search",
+		calendar: "mdi:calendar-cursor",
 	};
 	if (text in textIconMap) {
 		return textIconMap[text];
@@ -214,6 +233,8 @@ export const getTextToSVGPath = (text: string) => {
 			"M6.335 5.144c-1.654 -1.199 -4.335 -2.127 -4.335 .826c0 .59 .35 4.953 .556 5.661c.713 2.463 3.13 2.75 5.444 2.369c-4.045 .665 -4.889 3.208 -2.667 5.41c1.03 1.018 1.913 1.59 2.667 1.59c2 0 3.134 -2.769 3.5 -3.5c.333 -.667 .5 -1.167 .5 -1.5c0 .333 .167 .833 .5 1.5c.366 .731 1.5 3.5 3.5 3.5c.754 0 1.637 -.571 2.667 -1.59c2.222 -2.203 1.378 -4.746 -2.667 -5.41c2.314 .38 4.73 .094 5.444 -2.369c.206 -.708 .556 -5.072 .556 -5.661c0 -2.953 -2.68 -2.025 -4.335 -.826c-2.293 1.662 -4.76 5.048 -5.665 6.856c-.905 -1.808 -3.372 -5.194 -5.665 -6.856z",
 		"mdi:open-in-new":
 			"M14 3v2h3.59l-9.83 9.83l1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2z",
+		calendar:
+			"M22.86 17.74c-.09.11-.21.17-.33.2l-1.87.36l1.29 2.84c.16.29.02.65-.28.79l-2.14 1.01c-.09.06-.17.06-.26.06c-.22 0-.43-.12-.53-.34l-1.29-2.83l-1.49 1.21a.593.593 0 0 1-.96-.47V11.6c0-.33.26-.6.59-.6c.15 0 .29.05.41.13l6.77 5.76c.27.23.3.61.09.85M12 15v-5H7v5zm7-12h-1V1h-2v2H8V1H6v2H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h8v-2H5V8h14v3.06l2 1.7V5c0-1.1-.9-2-2-2",
 	};
 	if (text in textSvgMap) {
 		return textSvgMap[text];

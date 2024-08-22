@@ -1,4 +1,3 @@
-import fetch from "node-fetch";
 import { REQUEST_TIMEOUT_MS, HOME_PAGE_SLUG, MENU_PAGES_COLLECTION } from "../constants";
 import type {
 	Block,
@@ -19,6 +18,7 @@ const BASE_PATH = import.meta.env.BASE_URL;
 let referencesInPageCache: { [entryId: string]: ReferencesInPage[] } | null = null;
 let referencesToPageCache: { [entryId: string]: { entryId: string; block: Block }[] } | null = null;
 let firstImage = true;
+let track_current_page_id: string | null = null;
 
 export function resetFirstImage() {
 	firstImage = true;
@@ -30,6 +30,13 @@ export function getFirstImage() {
 		firstImage = false;
 	}
 	return returnval;
+}
+export function setTrackCurrentPageId(pageId: string) {
+	track_current_page_id = pageId;
+	return true;
+}
+export function getTrackCurrentPageId() {
+	return track_current_page_id;
 }
 
 export const filePath = (url: URL): string => {
@@ -312,14 +319,16 @@ export const getAnchorLinkAndBlock = async (
 	richText: RichText,
 ): Promise<{
 	hreflink: string | null;
-	blocklinked: any | null;
+	blocklinked: Block | null;
 	conditionmatch: string | null;
 	post: Post | null;
+	isBlockLinkedHeading: boolean;
 }> => {
-	let block_linked = null;
+	let block_linked: Block | null = null;
 	let block_linked_id = null;
 	let post: Post | null = null;
 	let pageId = null;
+	let isBlockLinkedHeading = false;
 
 	pageId = richText.InternalHref?.PageId;
 	if (pageId) {
@@ -333,6 +342,7 @@ export const getAnchorLinkAndBlock = async (
 			block_linked_id = buildHeadingId(
 				block_linked.Heading1 || block_linked.Heading2 || block_linked.Heading3,
 			);
+			isBlockLinkedHeading = true;
 		}
 	}
 
@@ -342,13 +352,23 @@ export const getAnchorLinkAndBlock = async (
 			blocklinked: block_linked,
 			conditionmatch: "external",
 			post: post,
+			isBlockLinkedHeading,
+		};
+	} else if (block_linked_id && post && post.PageId === track_current_page_id) {
+		return {
+			hreflink: `${getPostLink(post.Slug, post.Collection === MENU_PAGES_COLLECTION)}/#${block_linked_id}`,
+			blocklinked: block_linked,
+			conditionmatch: "block_current_page",
+			post: post,
+			isBlockLinkedHeading,
 		};
 	} else if (block_linked_id && post) {
 		return {
 			hreflink: `${getPostLink(post.Slug, post.Collection === MENU_PAGES_COLLECTION)}/#${block_linked_id}`,
 			blocklinked: block_linked,
-			conditionmatch: "block_current_or_other_page",
+			conditionmatch: "block_other_page",
 			post: post,
+			isBlockLinkedHeading,
 		};
 	} else if (post) {
 		return {
@@ -356,9 +376,16 @@ export const getAnchorLinkAndBlock = async (
 			blocklinked: block_linked,
 			conditionmatch: "other_page",
 			post: post,
+			isBlockLinkedHeading,
 		};
 	}
-	return { hreflink: null, blocklinked: null, conditionmatch: "no_match", post: null };
+	return {
+		hreflink: null,
+		blocklinked: null,
+		conditionmatch: "no_match",
+		post: null,
+		isBlockLinkedHeading,
+	};
 };
 
 export const getReferenceLink = async (

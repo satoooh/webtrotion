@@ -18,7 +18,14 @@ const Tag = hasChildren && renderChildren ? "div" : "p";
 ---
 
 <Tag
-	class={`${getNotionColorToTailwindColor(block.Paragraph.Color)} my-4 min-h-7 text-[1.05rem] leading-[2.05] tracking-[0.025em] text-textColor`}
+	class:list={[
+		"my-4 min-h-7 text-[1.05rem] leading-[2.05] tracking-[0.025em] text-textColor",
+		{
+			[`${getNotionColorToTailwindColor(block.Paragraph.Color)} rounded px-1`]:
+				block.Paragraph.Color &&
+				!["default", "default_background", "default-background"].includes(block.Paragraph.Color),
+		},
+	]}
 	id={setId ? block.Id : undefined}
 >
 	{block.Paragraph.RichTexts.map((richText) => <RichText richText={richText} blockID={block.Id} />)}

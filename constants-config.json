@@ -15,6 +15,7 @@
     "threads": "",
     "instagram": "",
     "mastodon": "",
+		"calendar": "",
     "this-github-repo": ""
   },
   "custom-domain": "satoooh.org",
@@ -96,6 +97,7 @@
   ],
   "hide-underscore-slugs-in-lists": true,
   "home-page-slug": "",
+	"all-footnotes-page-slug": "_all-footnotes",
   "og-setup": {
     "columns": 1,
     "excerpt": false,
