@@ -19,6 +19,21 @@ let referencesInPageCache: { [entryId: string]: ReferencesInPage[] } | null = nu
 let referencesToPageCache: { [entryId: string]: { entryId: string; block: Block }[] } | null = null;
 let firstImage = true;
 let track_current_page_id: string | null = null;
+let current_headings = null;
+
+export function setCurrentHeadings(headings) {
+	current_headings = headings;
+	return true;
+}
+
+export function resetCurrentHeadings() {
+	current_headings = null;
+	return true;
+}
+
+export function getCurrentHeadings() {
+	return current_headings;
+}
 
 export function resetFirstImage() {
 	firstImage = true;
@@ -158,7 +173,10 @@ const _filterRichTexts = (
 		}, [] as RichText[]) || [],
 	external_hrefs:
 		rich_texts.reduce((acc, richText) => {
-			if (!richText.InternalHref && !richText.Mention && richText.Href) {
+			if (
+				(!richText.InternalHref && !richText.Mention && richText.Href) ||
+				(richText.Mention && richText.Mention.LinkMention)
+			) {
 				acc.push(richText);
 			}
 			return acc;
