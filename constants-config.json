@@ -1,7 +1,18 @@
 {
   "database-id": "d3ce88884eb2490db078adb74a1440e8",
   "author": "satoooh",
-  "public-ga-tracking-id": "G-RMM4YF7S0F",
+	"tracking": {
+		"google-analytics": {
+			"use-ga": true,
+		  "public-ga-tracking-id": "G-RMM4YF7S0F"
+		},
+		"umami": {
+			"use-umami": false,
+			"data-website-id": "",
+			"self-hosted": false,
+			"self-hosted-umami-url": ""
+		}
+	},
   "google-search-console-html-tag": "",
   "socials": {
     "email": "mail@satoooh.org",
@@ -9,6 +20,7 @@
     "googlescholar": "",
     "semanticscholar": "",
     "dblp": "",
+		"substack": "",
     "facebook": "",
     "twitter": "https://x.com/9Satoooh",
     "bluesky": "https://bsky.app/profile/satoooh.org",
@@ -16,12 +28,14 @@
     "instagram": "",
     "mastodon": "",
 		"calendar": "",
+		"kofi": "",
+		"buy-me-a-coffee": "",
     "this-github-repo": ""
   },
   "custom-domain": "satoooh.org",
   "base-path": "",
   "giscus": {
-    "data-repo": "satoooh/webtrotion-astro-notion-cms-website-blog",
+    "data-repo": "satoooh/webtrotion",
     "data-repo-id": "R_kgDOMPfwfw",
     "data-category": "Announcements",
     "data-category-id": "DIC_kwDOMPfwf84CgdWc",
@@ -29,10 +43,18 @@
     "data-input-position": "top",
     "data-reactions-enabled": true
   },
+	"bluesky-comments": {
+		"show-comments-from-bluesky": false,
+		"auto-search-for-match": {
+			"turn-on-auto-search": false,
+			"author": "",
+			"echo-feed-emoji": ""
+		}
+	},
   "references": {
     "site-links-in-page": true,
     "external-links-in-page": true,
-    "media-and-file-links-in-this-page": true,
+    "media-and-file-links-in-this-page": false,
     "links-to-this-page": true,
     "popovers": true,
     "footnotes": true
@@ -42,7 +64,8 @@
     "html-inject": "<!DOCTYPE html> <!-- inject -->",
     "alt-text": {"start":"<<alt-text-start>>", "end":"<<alt-text-end>>"},
     "expressive-code": {"start":"<<expressive-code-start>>", "end":"<<expressive-code-end>>"},
-    "shiki-transform": "<<shiki-transform>>"
+    "shiki-transform": "<<shiki-transform>>",
+    "table": "<<🗂️>>"
   },
   "recent-posts-on-home-page": true,
   "theme": {
@@ -104,7 +127,7 @@
     "title-font-url":"https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@500&display=swap",
     "footnote-font-url":"https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@700&display=swap"
   },
-  "full-width-tweet-embeds": true,
+  "full-width-social-embeds": true,
   "optimize-images": true,
   "redirects": {}
 }

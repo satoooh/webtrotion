@@ -25,6 +25,7 @@ export interface Post {
 	LastUpdatedDate: string;
 	LastUpdatedTimeStamp: Date;
 	Pinned: boolean;
+	BlueSkyPostLink: string | "";
 }
 
 export interface Block {
@@ -301,6 +302,7 @@ export interface Mention {
 	Page?: Reference;
 	DateStr?: string;
 	LinkMention?: LinkMention | undefined;
+	CustomEmoji?: CustomEmojiMention | undefined;
 }
 
 export interface LinkMention {
@@ -313,6 +315,11 @@ export interface LinkMention {
 	Height?: number;
 	IframeUrl?: string;
 	LinkProvider?: string;
+}
+
+export interface CustomEmojiMention {
+	Name: string;
+	Url?: string;
 }
 
 export interface Reference {

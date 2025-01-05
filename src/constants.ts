@@ -16,7 +16,7 @@ export const NOTION_API_SECRET =
 	import.meta.env.NOTION_API_SECRET || process.env.NOTION_API_SECRET || "";
 export const DATABASE_ID = process.env.DATABASE_ID || key_value_from_json["database-id"] || "";
 export const AUTHOR = key_value_from_json["author"] || "";
-export const PUBLIC_GA_TRACKING_ID = key_value_from_json["public-ga-tracking-id"] || "";
+export const TRACKING = key_value_from_json["tracking"] || {};
 export const WEBMENTION_API_KEY =
 	import.meta.env.WEBMENTION_API_KEY ||
 	process.env.WEBMENTION_API_KEY ||
@@ -93,12 +93,14 @@ export const SOCIALS = key_value_from_json["socials"] || {};
 
 export const GISCUS = key_value_from_json["giscus"] || null;
 
+export const BLUESKY_COMM = key_value_from_json["bluesky-comments"] || {};
+
 export const THEME = key_value_from_json["theme"] || {};
 
 export const GOOGLE_SEARCH_CONSOLE_META_TAG =
 	key_value_from_json["google-search-console-html-tag"] || null;
 
-export const FULL_WIDTH_TWEETS = key_value_from_json["full-width-tweet-embeds"] || false;
+export const FULL_WIDTH_SM = key_value_from_json["full-width-social-embeds"] || false;
 
 const TRANSFORMER_FUNCTIONS_ARR = [
 	transformerNotationFocus(),

@@ -18,6 +18,7 @@ const { hreflink, blocklinked, conditionmatch, post, isBlockLinkedHeading } =
 {
 	hreflink &&
 	REFERENCES &&
+	Object.keys(REFERENCES).length > 0 &&
 	REFERENCES["popovers"] &&
 	conditionmatch &&
 	["block_other_page", "other_page"].includes(conditionmatch) &&
@@ -65,7 +66,7 @@ const { hreflink, blocklinked, conditionmatch, post, isBlockLinkedHeading } =
 		) : (
 			<a
 				href={hreflink}
-				class="webtrotion-page-link text-link decoration-solid"
+				class="site-page-link text-link decoration-solid"
 				target="_blank"
 				rel="noopener noreferrer"
 			>
