@@ -1,4 +1,4 @@
-import { REQUEST_TIMEOUT_MS, HOME_PAGE_SLUG, MENU_PAGES_COLLECTION } from "../constants";
+import { BUILD_FOLDER_PATHS, HOME_PAGE_SLUG, MENU_PAGES_COLLECTION } from "../constants";
 import type {
 	Block,
 	Heading1,
@@ -8,11 +8,12 @@ import type {
 	Column,
 	ReferencesInPage,
 	Post,
-} from "./interfaces";
+} from "@/lib/interfaces";
 import { slugify } from "../utils/slugify";
 import path from "path";
 import fs from "node:fs";
-import { getBlock, getPostByPageId } from "./notion/client";
+import { getBlock, getPostByPageId } from "../lib/notion/client";
+import superjson from "superjson";
 
 const BASE_PATH = import.meta.env.BASE_URL;
 let referencesInPageCache: { [entryId: string]: ReferencesInPage[] } | null = null;
@@ -69,21 +70,21 @@ export const buildTimeFilePath = (url: URL): string => {
 export function getReferencesInPage(entryId: string) {
 	// Load and aggregate data if referencesInPageCache is null
 	if (referencesInPageCache === null) {
-		referencesInPageCache = {};
-
-		// Assuming you have a way to list all relevant JSON files in ./tmp/
-		const files = fs.readdirSync("./tmp").filter((file) => file.endsWith("_ReferencesInPage.json"));
-
-		for (const file of files) {
-			const filePath = path.join("./tmp", file);
-			const fileContent = fs.readFileSync(filePath, "utf-8");
-			const pageId = file.replace("_ReferencesInPage.json", "");
-			referencesInPageCache[pageId] = JSON.parse(fileContent);
-		}
+		referencesInPageCache = Object.fromEntries(
+			fs.readdirSync(BUILD_FOLDER_PATHS["referencesInPage"]).map((file) => {
+				const pageId = file.replace(".json", "");
+				return [
+					pageId,
+					superjson.parse(
+						fs.readFileSync(path.join(BUILD_FOLDER_PATHS["referencesInPage"], file), "utf-8"),
+					),
+				];
+			}),
+		);
 	}
 
 	// Return the references for the given entryId, or null if not found
-	return referencesInPageCache[entryId] || null;
+	return referencesInPageCache ? referencesInPageCache[entryId] : null;
 }
 
 export function getReferencesToPage(entryId: string) {
@@ -91,19 +92,20 @@ export function getReferencesToPage(entryId: string) {
 	if (referencesToPageCache === null) {
 		referencesToPageCache = {};
 
-		// Assuming you have a way to list all relevant JSON files in ./tmp/
-		const files = fs.readdirSync("./tmp").filter((file) => file.endsWith("_ReferencesToPage.json"));
-
-		for (const file of files) {
-			const filePath = path.join("./tmp", file);
-			const fileContent = fs.readFileSync(filePath, "utf-8");
-			const pageId = file.replace("_ReferencesToPage.json", "");
-			referencesToPageCache[pageId] = JSON.parse(fileContent);
-		}
+		referencesToPageCache = Object.fromEntries(
+			fs.readdirSync(BUILD_FOLDER_PATHS["referencesToPage"]).map((file) => {
+				const pageId = file.replace(".json", "");
+				return [
+					pageId,
+					superjson.parse(
+						fs.readFileSync(path.join(BUILD_FOLDER_PATHS["referencesToPage"], file), "utf-8"),
+					),
+				];
+			}),
+		);
 	}
-
 	// Return the references for the given entryId, or null if not found
-	return referencesToPageCache[entryId] || null;
+	return referencesToPageCache ? referencesToPageCache[entryId] : null;
 }
 
 export const extractTargetBlocks = (blockTypes: string[], blocks: Block[]): Block[] => {
@@ -298,7 +300,7 @@ export const buildURLToHTMLMap = async (urls: URL[]): Promise<{ [key: string]: s
 			const controller = new AbortController();
 			const timeout = setTimeout(() => {
 				controller.abort();
-			}, REQUEST_TIMEOUT_MS);
+			}, 10000);
 
 			return fetch(url.toString(), { signal: controller.signal })
 				.then((res) => {
@@ -370,7 +372,7 @@ export const getAnchorLinkAndBlock = async (
 		};
 	} else if (block_linked_id && post && post.PageId === track_current_page_id) {
 		return {
-			hreflink: `${getPostLink(post.Slug, post.Collection === MENU_PAGES_COLLECTION)}/#${block_linked_id}`,
+			hreflink: `${getPostLink(post.Slug, post.Collection === MENU_PAGES_COLLECTION)}#${block_linked_id}`,
 			blocklinked: block_linked,
 			conditionmatch: "block_current_page",
 			post: post,
@@ -378,7 +380,7 @@ export const getAnchorLinkAndBlock = async (
 		};
 	} else if (block_linked_id && post) {
 		return {
-			hreflink: `${getPostLink(post.Slug, post.Collection === MENU_PAGES_COLLECTION)}/#${block_linked_id}`,
+			hreflink: `${getPostLink(post.Slug, post.Collection === MENU_PAGES_COLLECTION)}#${block_linked_id}`,
 			blocklinked: block_linked,
 			conditionmatch: "block_other_page",
 			post: post,
@@ -441,13 +443,14 @@ export const getReferenceLink = async (
 	return [null, null];
 };
 
-export const getPostLink = (slug: string, isRoot: boolean = false) => {
+export const getPostLink = (slug: string, isRoot: boolean = false): string => {
 	const linkedPath = isRoot
 		? slug === HOME_PAGE_SLUG
-			? path.join(BASE_PATH, `/`)
-			: path.join(BASE_PATH, `/${slug}`)
-		: path.join(BASE_PATH, `/posts/${slug}`);
-	return linkedPath;
+			? path.posix.join(BASE_PATH, "/")
+			: path.posix.join(BASE_PATH, slug)
+		: path.posix.join(BASE_PATH, "posts", slug);
+
+	return linkedPath.endsWith("/") ? linkedPath : `${linkedPath}/`; // Ensure trailing slash
 };
 
 export const buildHeadingId = (heading: Heading1 | Heading2 | Heading3) => {
@@ -552,6 +555,24 @@ export const isFullAmazonURL = (url: URL): boolean => {
 export const isAmazonURL = (url: URL): boolean => {
 	return isShortAmazonURL(url) || isFullAmazonURL(url);
 };
+
+export const isNotionEmbedURL = (url: URL): boolean => {
+	// Ensure the pathname starts with "/ebd/"
+	const pathname = url.pathname;
+	if (!pathname.startsWith("/ebd/")) {
+		return false;
+	}
+
+	// Regular expression to match the expected pattern after "/ebd/"
+	const notionEmbedPattern = /^\/ebd\/.*[a-zA-Z0-9]{32}(\/|\?|$)/;
+	if (!notionEmbedPattern.test(pathname)) {
+		return false;
+	}
+
+	// All checks passed
+	return true;
+};
+
 export const isYouTubeURL = (url: URL): boolean => {
 	if (["www.youtube.com", "youtube.com", "youtu.be"].includes(url.hostname)) {
 		return true;
@@ -602,25 +623,63 @@ export const parseYouTubeVideoIdTitle = async (url: URL): Promise<[string, strin
 export const isEmbeddableURL = async (url: URL): Promise<boolean> => {
 	try {
 		const urlString = url.toString();
-		const response = await fetch(urlString, { method: "HEAD" });
-		const xFrameOptions = response.headers.get("x-frame-options");
-		const contentSecurityPolicy = response.headers.get("content-security-policy");
+		const response = await fetch(urlString, {
+			method: "HEAD",
+			headers: {
+				"User-Agent": "Mozilla/5.0 (compatible; EmbedChecker/1.0)",
+			},
+		});
 
-		if (
-			xFrameOptions &&
-			(xFrameOptions.toLowerCase() === "deny" || xFrameOptions.toLowerCase() === "sameorigin")
-		) {
+		if (!response.ok) {
 			return false;
 		}
 
-		if (contentSecurityPolicy && contentSecurityPolicy.includes("frame-ancestors")) {
-			// Further parsing might be required here to interpret the CSP policy
-			return false;
+		const xFrameOptions = response.headers.get("x-frame-options");
+		const contentSecurityPolicy = response.headers.get("content-security-policy");
+
+		// Check X-Frame-Options header
+		if (xFrameOptions) {
+			const xfoValue = xFrameOptions.toLowerCase();
+			if (xfoValue === "deny" || xfoValue === "sameorigin") {
+				return false;
+			}
+		}
+
+		// Check Content-Security-Policy header
+		if (contentSecurityPolicy) {
+			const cspValue = contentSecurityPolicy.toLowerCase();
+
+			// Look for frame-ancestors directive
+			const frameAncestorsMatch = cspValue
+				.split(";")
+				.find((directive) => directive.trim().startsWith("frame-ancestors"));
+
+			if (frameAncestorsMatch) {
+				const values = frameAncestorsMatch.split(" ").slice(1);
+
+				// Not embeddable if:
+				// 1. frame-ancestors is 'none'
+				// 2. doesn't include '*' or your domain
+				if (values.includes("'none'")) {
+					return false;
+				}
+
+				// If it includes '*' or your domain, it's embeddable
+				if (values.includes("*")) {
+					return true;
+				}
+
+				// Check if your domain is allowed
+				const yourDomain = new URL(urlString).origin;
+				if (!values.some((v) => v === "'self'" || v === yourDomain)) {
+					return false;
+				}
+			}
 		}
 
 		return true;
 	} catch (error) {
-		console.error("Error checking URL: ", error);
+		console.error("Error checking URL:", error);
 		return false;
 	}
 };

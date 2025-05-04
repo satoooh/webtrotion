@@ -2,12 +2,12 @@
 // import type { CollectionEntry } from "astro:content";
 // import type { HTMLTag, Polymorphic } from "astro/types";
 import type { HTMLTag } from "astro/types";
-import FormattedDate from "../FormattedDate.astro";
-import type { Post } from "src/lib/interfaces";
+import FormattedDate from "@/components/FormattedDate.astro";
+import type { Post } from "@/lib/interfaces";
 import { getNotionColorToTailwindColor } from "@/lib/style-helpers";
 import { getNavLink, getPostLink } from "@/lib/blog-helpers";
 import { MENU_PAGES_COLLECTION } from "@/constants";
-import Icon from "@/components/Icon";
+import Icon from "@/components/Icon.astro";
 import { slugify } from "@/utils";
 
 interface Props {
@@ -20,7 +20,7 @@ const { post, as: Tag = "div", withDesc = false } = Astro.props;
 const postLink = getPostLink(post.Slug, post.Collection === MENU_PAGES_COLLECTION);
 ---
 
-<FormattedDate date={new Date(post.Date)} class="min-w-[120px] text-xs text-accent/90" />
+<FormattedDate date={new Date(post.Date)} class="text-accent/90 min-w-[120px] text-xs" />
 <Tag>
 	{
 		post.Pinned && (

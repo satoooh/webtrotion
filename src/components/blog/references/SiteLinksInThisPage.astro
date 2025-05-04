@@ -1,8 +1,8 @@
 ---
 import type { Block, Post, ReferencesInPage } from "@/lib/interfaces";
-import NBlocksPopover from "./NBlocksPopover.astro";
+import NBlocksPopover from "@/components/blog/references/NBlocksPopover.astro";
 import { getReferenceLink } from "@/lib/blog-helpers";
-import NPagePopover from "./NPagePopover.astro";
+import NPagePopover from "@/components/blog/references/NPagePopover.astro";
 import { REFERENCES } from "@/constants";
 interface Props {
 	post: Post;
@@ -93,7 +93,7 @@ entryIdsToDel.forEach((entryId) => {
 									</a>
 									{" at "}
 									{blocks.map((block, index) => (
-										<a href={blockIdLinks[block.Id]} class="font-mono text-link">
+										<a href={blockIdLinks[block.Id]} class="text-link font-mono">
 											{`[${index + 1}]`}{" "}
 										</a>
 									))}

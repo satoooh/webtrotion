@@ -1,9 +1,9 @@
 ---
-import * as interfaces from "../../lib/interfaces.ts";
-import { getNotionColorToTailwindColor } from "../../lib/style-helpers.ts";
-import RichText from "./RichText.astro";
-import NotionBlocks from "../NotionBlocks.astro";
-import Icon from "@/components/Icon";
+import * as interfaces from "@/lib/interfaces.ts";
+import { getNotionColorToTailwindColor } from "@/lib/style-helpers.ts";
+import RichText from "@/components/notion-blocks/RichText.astro";
+import NotionBlocks from "@/components/NotionBlocks.astro";
+import Icon from "@/components/Icon.astro";
 
 export interface Props {
 	block: interfaces.Block;
@@ -23,7 +23,7 @@ const { block, renderChildren = true, setId = true } = Astro.props;
 						class:list={[
 							"flex max-w-full items-start",
 							{
-								[`${getNotionColorToTailwindColor(b.ToDo.Color)} rounded px-1`]:
+								[`${getNotionColorToTailwindColor(b.ToDo.Color)} rounded-sm px-1`]:
 									b.ToDo.Color &&
 									!["default", "default_background", "default-background"].includes(b.ToDo.Color),
 							},
@@ -34,9 +34,9 @@ const { block, renderChildren = true, setId = true } = Astro.props;
 							{/* Padding for the checkbox */}
 
 							<Icon
-								class="h-5 w-5 text-textColor/50"
-								name={b.ToDo.Checked ? "checkbox-checked" : "checkbox-blank"}
-								aria-label={b.ToDo.Checked ? "checkbox-checked" : "checkbox-blank"}
+								class="text-textColor/50 h-5 w-5"
+								name={b.ToDo.Checked ? "checkbox-checked" : "checkbox-unchecked"}
+								aria-label={b.ToDo.Checked ? "checkbox-checked" : "checkbox-unchecked"}
 								focusable="false"
 							/>
 							<span class="rss-only hidden">{b.ToDo.Checked ? "✅" : "⬜"}</span>

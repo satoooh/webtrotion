@@ -12,6 +12,22 @@ import {
 	transformerNotationErrorLevel,
 } from "@shikijs/transformers";
 
+export const BUILD_FOLDER_PATHS = {
+	buildcache: "./buildcache",
+	tmp: "./tmp",
+	styles: path.join("src", "styles"),
+	blocksJson: path.join("./tmp", "blocks-json-cache"),
+	headingsCache: path.join("./tmp", "blocks-json-cache", "headings"),
+	referencesInPage: path.join("./tmp", "blocks-json-cache", "references-in-page"),
+	referencesToPage: path.join("./tmp", "blocks-json-cache", "references-to-page"),
+	ogImages: path.join("./tmp", "og-images"),
+	rssCache: path.join("./tmp", "rss-cache"),
+	blocksHtmlCache: path.join("./tmp", "blocks-html-cache"),
+	referencesHtmlCache: path.join("./tmp", "blocks-html-cache", "references"),
+	public: path.join("./public"),
+	publicNotion: path.join("./public", "notion/"),
+};
+
 export const NOTION_API_SECRET =
 	import.meta.env.NOTION_API_SECRET || process.env.NOTION_API_SECRET || "";
 export const DATABASE_ID = process.env.DATABASE_ID || key_value_from_json["database-id"] || "";
@@ -26,13 +42,11 @@ export const WEBMENTION_LINK = key_value_from_json["webmention"]["webmention-lin
 
 export const CUSTOM_DOMAIN =
 	process.env.CUSTOM_DOMAIN || key_value_from_json["custom-domain"] || ""; // <- Set your custom domain if you have. e.g. alpacat.com
-export const BASE_PATH = process.env.BASE_PATH || key_value_from_json["base-path"] || ""; // <- Set sub directory path if you want. e.g. /docs/
+export const BASE_PATH =
+	process.env.BASE || process.env.BASE_PATH || key_value_from_json["base-path"] || ""; // <- Set sub directory path if you want. e.g. /docs/
 
 export const NUMBER_OF_POSTS_PER_PAGE = key_value_from_json["number-of-posts-per-page"] || 10;
-export const REQUEST_TIMEOUT_MS = parseInt(
-	key_value_from_json["request-timeout-ms"] || "10000",
-	10,
-);
+
 export const ENABLE_LIGHTBOX = key_value_from_json["enable-lightbox"] || false;
 
 /**
@@ -73,7 +87,7 @@ export const SHORTCODES = key_value_from_json["shortcodes"] || {
 
 // Function to read the build start time from the file
 const readBuildStartTime = () => {
-	const filePath = path.join("./tmp", "build_start_timestamp.txt");
+	const filePath = path.join(BUILD_FOLDER_PATHS["tmp"], "build_start_timestamp.txt");
 	if (fs.existsSync(filePath)) {
 		const buildTimestampStr = fs.readFileSync(filePath, "utf8");
 		const buildTimestamp = parseInt(buildTimestampStr, 10);

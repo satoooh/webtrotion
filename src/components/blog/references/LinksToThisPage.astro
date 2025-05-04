@@ -1,6 +1,6 @@
 ---
 import type { Block, Post } from "@/lib/interfaces";
-import NBlocksPopover from "./NBlocksPopover.astro";
+import NBlocksPopover from "@/components/blog/references/NBlocksPopover.astro";
 import { getReferenceLink } from "@/lib/blog-helpers";
 import { REFERENCES } from "@/constants";
 interface Props {
@@ -57,7 +57,7 @@ if (groupedReferences) {
 							) : (
 								<>
 									{blocks.map((block, index) => (
-										<a href={blockIdLinks[block.Id]} class="font-mono text-xs text-link">
+										<a href={blockIdLinks[block.Id]} class="text-link font-mono text-xs">
 											{`[${index + 1}]`}
 										</a>
 									))}

@@ -1,5 +1,5 @@
 ---
-import PageLayout from "@/layouts/Base";
+import PageLayout from "@/layouts/Base.astro";
 import { getNavLink } from "@/lib/blog-helpers";
 import { getAllTagsWithCounts } from "@/lib/notion/client";
 import { getNotionColorToTailwindColor } from "@/lib/style-helpers";
@@ -15,7 +15,7 @@ const meta = {
 ---
 
 <PageLayout meta={meta}>
-	<h1 class="title mb-6 text-accent-2">Tags</h1>
+	<h1 class="title text-accent-2 mb-6">Tags</h1>
 	<ul class="space-y-4">
 		{
 			allTags.map((tag) => (

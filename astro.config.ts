@@ -1,5 +1,6 @@
 import { defineConfig } from "astro/config";
-import tailwind from "@astrojs/tailwind";
+import tailwindcss from "@tailwindcss/vite";
+
 import path from "path";
 import { CUSTOM_DOMAIN, BASE_PATH } from "./src/constants";
 const getSite = function () {
@@ -26,10 +27,12 @@ const getSite = function () {
 import CustomIconDownloader from "./src/integrations/custom-icon-downloader";
 import EntryCacheEr from "./src/integrations/entry-cache-er";
 import PublicNotionCopier from "./src/integrations/public-notion-copier";
+import blocksHtmlCacher from "./src/integrations/block-html-cache-er";
 import DeleteBuildCache from "./src/integrations/delete-build-cache";
-import buildTimestampRecorder from "./src/integrations/build-timestamp-recorder.ts";
+import buildTimestampRecorder from "./src/integrations/build-timestamp-recorder";
 import rssContentEnhancer from "./src/integrations/rss-content-enhancer";
 import CSSWriter from "./src/integrations/theme-constants-to-css";
+import createFoldersIfMissing from "./src/integrations/create-folders-if-missing";
 import robotsTxt from "astro-robots-txt";
 import config from "./constants-config.json";
 import partytown from "@astrojs/partytown";
@@ -41,13 +44,25 @@ function modifyRedirectPaths(
 	basePath: string,
 ): Record<string, string> {
 	const modifiedRedirects: Record<string, string> = {};
-	for (const [key, value] of Object.entries(redirects)) {
-		if (basePath && !value.startsWith(basePath) && !value.startsWith("/" + basePath)) {
-			modifiedRedirects[key] = path.join(basePath, value);
-		} else {
-			modifiedRedirects[key] = value;
-		}
+
+	// Normalize basePath: ensure it starts with "/" and remove trailing slash.
+	if (!basePath.startsWith("/")) {
+		basePath = "/" + basePath;
 	}
+	basePath = basePath.replace(/\/+$/, ""); // remove trailing slashes
+
+	for (const [key, value] of Object.entries(redirects)) {
+		// If it's an external URL, leave it unchanged.
+		if (value.startsWith("http://") || value.startsWith("https://")) {
+			modifiedRedirects[key] = value;
+			continue;
+		}
+
+		// Ensure value starts with a slash.
+		let normalizedValue = value.startsWith("/") ? value : "/" + value;
+		modifiedRedirects[key] = path.posix.join(basePath, normalizedValue);
+	}
+
 	return modifiedRedirects;
 }
 
@@ -59,34 +74,31 @@ export default defineConfig({
 		? modifyRedirectPaths(key_value_from_json["redirects"], process.env.BASE || BASE_PATH)
 		: {},
 	integrations: [
-		// mdx({}),
-		tailwind({
-			applyBaseStyles: false,
-		}),
-		// astroImageTools,
+		createFoldersIfMissing(),
 		buildTimestampRecorder(),
-		CustomIconDownloader(),
 		EntryCacheEr(),
-		PublicNotionCopier(),
-		DeleteBuildCache(),
+		CustomIconDownloader(),
 		CSSWriter(),
-		rssContentEnhancer(),
-		robotsTxt({
-			sitemapBaseFileName: "sitemap",
-		}),
 		partytown({
 			// Adds dataLayer.push as a forwarding-event.
 			config: {
 				forward: ["dataLayer.push"],
 			},
 		}),
+		robotsTxt({
+			sitemapBaseFileName: "sitemap",
+		}),
+		rssContentEnhancer(),
+		blocksHtmlCacher(),
+		PublicNotionCopier(),
+		DeleteBuildCache(),
 	],
 	image: {
 		domains: ["webmention.io"],
 	},
 	prefetch: true,
 	vite: {
-		plugins: [],
+		plugins: [tailwindcss()],
 		optimizeDeps: {
 			exclude: ["@resvg/resvg-js"],
 		},
