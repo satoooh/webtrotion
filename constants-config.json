@@ -1,3 +1,56 @@
+{
+  "database-id": "d3ce88884eb2490db078adb74a1440e8",
+  "author": "satoooh",
+	"tracking": {
+		"google-analytics": {
+			"use-ga": true,
+		  "public-ga-tracking-id": "G-RMM4YF7S0F"
+		},
+		"umami": {
+			"use-umami": false,
+			"data-website-id": "",
+			"self-hosted": false,
+			"self-hosted-umami-url": ""
+		}
+	},
+  "google-search-console-html-tag": "",
+  "socials": {
+    "email": "mail@satoooh.org",
+    "github": "https://github.com/satoooh",
+    "googlescholar": "",
+    "semanticscholar": "",
+    "dblp": "",
+		"substack": "",
+    "facebook": "",
+    "twitter": "https://x.com/9Satoooh",
+    "bluesky": "https://bsky.app/profile/satoooh.org",
+    "threads": "",
+    "instagram": "",
+    "mastodon": "",
+		"calendar": "",
+		"kofi": "",
+		"buy-me-a-coffee": "",
+    "this-github-repo": ""
+  },
+  "custom-domain": "satoooh.org",
+  "base-path": "",
+  "giscus": {
+    "data-repo": "satoooh/webtrotion",
+    "data-repo-id": "R_kgDOMPfwfw",
+    "data-category": "Announcements",
+    "data-category-id": "DIC_kwDOMPfwf84CgdWc",
+    "data-mapping": "pathname",
+    "data-input-position": "top",
+    "data-reactions-enabled": true
+  },
+	"bluesky-comments": {
+		"show-comments-from-bluesky": false,
+		"auto-search-for-match": {
+			"turn-on-auto-search": false,
+			"author": "",
+			"echo-feed-emoji": ""
+		}
+	},
 	"references": {
 		"site-links-in-page": true,
 		"external-links-in-page": true,
