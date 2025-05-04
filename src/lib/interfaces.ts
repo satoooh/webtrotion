@@ -361,3 +361,11 @@ export type BlockTypes =
 	| "toggle"
 	| "video"
 	| "audio";
+
+export interface NoteArticle {
+	title: string;
+	link: string;
+	pubDate: string;
+	thumbnail?: string;
+	description?: string;
+}
