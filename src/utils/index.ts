@@ -43,10 +43,12 @@ export async function getMenu(): Promise<
 > {
 	const pages = await getAllPages();
 	const collections = await getCollections();
-	const collectionLinks = collections.map((name) => ({
-		title: name,
-		path: getNavLink("/collections/" + slugify(name)),
-	}));
+	const collectionLinks = collections
+		.filter((name) => name !== "Stream") // Streamを除外
+		.map((name) => ({
+			title: name,
+			path: getNavLink("/collections/" + slugify(name)),
+		}));
 
 	const pageLinks = pages
 		.map((page) => ({
