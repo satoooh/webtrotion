@@ -74,11 +74,16 @@ const dateTimeOptions: Intl.DateTimeFormatOptions = {
 		href={`https://b.hatena.ne.jp/entry/${encodeURIComponent(Astro.url.href)}`}
 		target="_blank"
 		rel="noopener noreferrer"
-		class="inline-flex items-center gap-1 rounded-md bg-[#00a5de] px-3 py-1 text-sm text-white transition-opacity hover:opacity-80"
+		class="inline-flex items-center gap-1 rounded-md bg-[#00a4de] px-3 py-1.5 text-sm text-white transition-all hover:bg-[#0090c5] hover:shadow-md"
 		aria-label="Share on Hatena Bookmark"
 	>
-		<span class="font-bold">B!</span>
-		はてブ
+		<Icon
+			name="hatena-bookmark"
+			class="h-4 w-4"
+			aria-hidden="true"
+			focusable="false"
+		/>
+		<span>はてブ</span>
 	</a>
 </div>
 <hr class="divider bg-accent/30 mx-auto my-4 h-1 w-full rounded-sm border-none" />
