@@ -33,7 +33,7 @@ const id = buildHeadingId(block.Heading2);
 				</div>
 				<span class="inline">
 					<h3
-						class={`toggle-h3 mt-6 mb-1 inline cursor-pointer text-xl font-semibold ${setId ? "hasId" : "noId"}`}
+						class={`heading-2 toggle-h3 mt-6 mb-1 inline cursor-pointer text-xl font-semibold ${setId ? "hasId" : "noId"}`}
 						id={setId ? id : undefined}
 						onclick="
         var fullUrl = `${window.location.origin}${window.location.pathname}#${id}`;
@@ -60,7 +60,7 @@ const id = buildHeadingId(block.Heading2);
 		</details>
 	) : (
 		<h3
-			class={`mt-6 mb-1 cursor-pointer text-xl font-semibold ${setId ? "hasId" : "noId"}`}
+			class={`heading-2 mt-6 mb-1 cursor-pointer text-xl font-semibold ${setId ? "hasId" : "noId"}`}
 			id={setId ? id : undefined}
 			onclick="
         var fullUrl = `${window.location.origin}${window.location.pathname}#${id}`;
@@ -76,28 +76,60 @@ const id = buildHeadingId(block.Heading2);
 }
 
 <style>
-	h3.hasId::before {
+	/* 見出しの洗練されたデザイン */
+	.heading-2 {
+		position: relative;
+		padding-left: 0.625rem;
+		transition: all 0.3s ease;
+		border-left: 3px solid rgba(var(--theme-accent), 0.3);
+	}
+	
+	.heading-2:hover {
+		padding-left: 0.875rem;
+		border-left-color: rgba(var(--theme-accent), 0.8);
+		color: rgb(var(--theme-accent));
+	}
+	
+	/* アンカーリンクのスタイル */
+	h3.hasId::after {
 		content: "#";
 		position: absolute;
-		color: color-mix(in srgb, var(--color-accent) 50%, transparent);
-		margin-left: -1.5rem;
+		color: rgba(var(--theme-accent), 0.4);
+		margin-left: 0.5rem;
 		display: inline-block;
-		opacity: 0; /* Start with invisible content */
-		transition: opacity 0.3s ease; /* Transition the opacity */
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		font-weight: 400;
+		font-size: 0.875em;
 	}
-	h3.noId::before {
+	
+	h3.noId::after {
 		display: none;
 	}
 
-	h3.hasId:hover::before {
-		opacity: 1; /* Make the content visible on hover */
+	h3.hasId:hover::after {
+		opacity: 1;
 	}
-	h3.hasId.toggle-h3::before {
-		margin-left: -2.5rem;
+	
+	.toggle-h3 {
+		padding-left: 0;
+		border-left: none;
 	}
+	
+	/* ダークモード対応 */
+	:global(.dark) .heading-2 {
+		border-left-color: rgba(255, 255, 255, 0.2);
+	}
+	
+	:global(.dark) .heading-2:hover {
+		border-left-color: rgba(var(--theme-accent-2), 0.8);
+		color: rgb(var(--theme-accent-2));
+	}
+	
 	details[open] > summary > div > .shrink-0.rotate-svg {
 		transform: rotate(90deg);
 	}
+	
 	summary::-webkit-details-marker {
 		display: none;
 	}

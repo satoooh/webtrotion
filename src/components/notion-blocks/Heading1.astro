@@ -33,7 +33,7 @@ const id = buildHeadingId(block.Heading1);
 				</div>
 				<span class="inline">
 					<h2
-						class={`toggle-h2 mt-8 mb-1 inline cursor-pointer text-2xl font-semibold ${setId ? "hasId" : "noId"}`}
+						class={`heading-1 toggle-h2 mt-8 mb-1 inline cursor-pointer text-2xl font-semibold ${setId ? "hasId" : "noId"}`}
 						id={setId ? id : undefined}
 						onclick="
         var fullUrl = `${window.location.origin}${window.location.pathname}#${id}`;
@@ -59,7 +59,7 @@ const id = buildHeadingId(block.Heading1);
 		</details>
 	) : (
 		<h2
-			class={`mt-8 mb-1 cursor-pointer text-2xl font-semibold ${setId ? "hasId" : "noId"}`}
+			class={`heading-1 mt-8 mb-1 cursor-pointer text-2xl font-semibold ${setId ? "hasId" : "noId"}`}
 			id={setId ? id : undefined}
 			onclick="
         var fullUrl = `${window.location.origin}${window.location.pathname}#${id}`;
@@ -75,28 +75,80 @@ const id = buildHeadingId(block.Heading1);
 }
 
 <style>
-	h2.hasId::before {
+	/* 見出しの洗練されたデザイン */
+	.heading-1 {
+		position: relative;
+		padding-left: 0.75rem;
+		transition: all 0.3s ease;
+		border-bottom: 2px solid transparent;
+		padding-bottom: 0.5rem;
+	}
+	
+	.heading-1::before {
+		content: '';
+		position: absolute;
+		left: 0;
+		top: 0;
+		bottom: 0;
+		width: 4px;
+		background: rgb(var(--theme-accent));
+		opacity: 0.7;
+		border-radius: 2px;
+		transition: all 0.3s ease;
+	}
+	
+	.heading-1:hover {
+		padding-left: 1rem;
+		color: rgb(var(--theme-accent));
+	}
+	
+	.heading-1:hover::before {
+		width: 5px;
+		opacity: 1;
+	}
+	
+	/* アンカーリンクのスタイル */
+	h2.hasId::after {
 		content: "#";
 		position: absolute;
-		color: color-mix(in srgb, var(--color-accent) 50%, transparent);
-		margin-left: -1.5rem;
+		color: rgba(var(--theme-accent), 0.4);
+		margin-left: 0.5rem;
 		display: inline-block;
-		opacity: 0; /* Start with invisible content */
-		transition: opacity 0.3s ease; /* Transition the opacity */
+		opacity: 0;
+		transition: opacity 0.3s ease;
+		font-weight: 400;
+		font-size: 0.875em;
 	}
-	h2.noId::before {
+	
+	h2.noId::after {
 		display: none;
 	}
 
-	h2.hasId:hover::before {
-		opacity: 1; /* Make the content visible on hover */
+	h2.hasId:hover::after {
+		opacity: 1;
 	}
-	h2.hasId.toggle-h2::before {
-		margin-left: -2.5rem;
+	
+	.toggle-h2 {
+		padding-left: 0;
 	}
+	
+	.toggle-h2::before {
+		display: none;
+	}
+	
+	/* ダークモード対応 */
+	:global(.dark) .heading-1 {
+		border-bottom-color: rgba(255, 255, 255, 0.1);
+	}
+	
+	:global(.dark) .heading-1:hover {
+		color: rgb(var(--theme-accent-2));
+	}
+	
 	details[open] > summary > div > .shrink-0.rotate-svg {
 		transform: rotate(90deg);
 	}
+	
 	summary::-webkit-details-marker {
 		display: none;
 	}
