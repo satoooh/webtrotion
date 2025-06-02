@@ -28,20 +28,30 @@ const plainTextCaption = block.NImage?.Caption.map((richText) => richText.PlainT
 			<figure class="mx-auto mt-1 max-w-full" id={setId ? block.Id : undefined}>
 				<div class="mx-auto min-w-0">
 				{ENABLE_LIGHTBOX ? (
-					<a
-						data-type="image"
-						href={image}
-						class="mediaglightbox no-rss"
-						data-description={plainTextCaption}
-						aria-label={`Open image with alt ${plainTextCaption} in lightbox`}
-					>
+					<>
+						{/* デスクトップ用（ライトボックス有効） */}
+						<a
+							data-type="image"
+							href={image}
+							class="mediaglightbox no-rss hidden sm:block"
+							data-description={plainTextCaption}
+							aria-label={`Open image with alt ${plainTextCaption} in lightbox`}
+						>
+							<img
+								class="imagemedia block max-w-full rounded-md"
+								loading={getFirstImage() && setId ? "eager" : "lazy"}
+								src={image}
+								alt={plainTextCaption}
+							/>
+						</a>
+						{/* モバイル用（ライトボックス無効） */}
 						<img
-							class="imagemedia block max-w-full rounded-md"
-							loading={getFirstImage() && setId ? "eager" : "lazy"}
+							class="imagemedia block max-w-full rounded-md border border-black/10 sm:hidden"
 							src={image}
+							loading={getFirstImage() ? "eager" : "lazy"}
 							alt={plainTextCaption}
 						/>
-					</a>
+					</>
 				) : (
 					<img
 						class="imagemedia block max-w-full rounded-md border border-black/10"
