@@ -68,4 +68,17 @@ const dateTimeOptions: Intl.DateTimeFormatOptions = {
 		</div>
 	)
 }
+<div class="mt-3 flex items-center gap-2">
+	<span class="text-sm font-medium">Share:</span>
+	<a
+		href={`https://b.hatena.ne.jp/entry/${encodeURIComponent(Astro.url.href)}`}
+		target="_blank"
+		rel="noopener noreferrer"
+		class="inline-flex items-center gap-1 rounded-md bg-[#00a5de] px-3 py-1 text-sm text-white transition-opacity hover:opacity-80"
+		aria-label="Share on Hatena Bookmark"
+	>
+		<span class="font-bold">B!</span>
+		はてブ
+	</a>
+</div>
 <hr class="divider bg-accent/30 mx-auto my-4 h-1 w-full rounded-sm border-none" />
