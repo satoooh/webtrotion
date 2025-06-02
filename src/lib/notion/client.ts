@@ -77,6 +77,10 @@ let blockIdPostIdMap: { [key: string]: string } | null = null;
 const BUILDCACHE_DIR = BUILD_FOLDER_PATHS["buildcache"];
 // Generic function to save data to buildcache
 function saveBuildcache<T>(filename: string, data: T): void {
+	// ディレクトリが存在しない場合は作成
+	if (!fs.existsSync(BUILDCACHE_DIR)) {
+		fs.mkdirSync(BUILDCACHE_DIR, { recursive: true });
+	}
 	const filePath = path.join(BUILDCACHE_DIR, filename);
 	fs.writeFileSync(filePath, superjson.stringify(data), "utf8");
 }
