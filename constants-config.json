@@ -44,11 +44,11 @@
     "data-reactions-enabled": true
   },
 	"bluesky-comments": {
-		"show-comments-from-bluesky": false,
+		"show-comments-from-bluesky": true,
 		"auto-search-for-match": {
-			"turn-on-auto-search": false,
-			"author": "",
-			"echo-feed-emoji": ""
+			"turn-on-auto-search": true,
+			"author": "satoooh.org",
+			"echo-feed-emoji": "📝"
 		}
 	},
 	"references": {
