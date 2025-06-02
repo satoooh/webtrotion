@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Preview</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        /* ホーム画面の追加スタイル */
+        :root {
+            --theme-accent: 59, 130, 246;
+            --theme-text: 30, 41, 59;
+        }
+
+        /* セクションのカード型デザイン */
+        .home-section {
+            @apply bg-white dark:bg-neutral-800/50 rounded-xl shadow-lg p-6 transition-all duration-300 hover:shadow-xl border border-neutral-200/50 dark:border-neutral-700/50 backdrop-blur-sm;
+        }
+
+        /* セクションタイトルのデザイン */
+        .home-section-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: linear-gradient(to right, rgb(var(--theme-accent)), rgb(var(--theme-accent)));
+            -webkit-background-clip: text;
+            background-clip: text;
+            color: transparent;
+        }
+
+        /* 投稿リストのカード */
+        .post-card {
+            padding: 1rem;
+            border-radius: 0.5rem;
+            background-color: #f9fafb;
+            border: 1px solid #e5e7eb;
+            transition: all 0.2s;
+        }
+
+        .post-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+        }
+
+        /* リンクホバーアニメーション */
+        .animated-link {
+            position: relative;
+            display: inline-block;
+            transition: color 0.2s;
+        }
+
+        .animated-link::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background-color: rgb(var(--theme-accent));
+            transition: width 0.3s;
+        }
+
+        .animated-link:hover::after {
+            width: 100%;
+        }
+
+        /* Blueskyカードの改善 */
+        .bluesky-card {
+            background: linear-gradient(to bottom right, #dbeafe, #ffffff);
+            border-color: #bfdbfe;
+        }
+
+        /* noteカードの改善 */
+        .note-card {
+            background: linear-gradient(to bottom right, #d1fae5, #ffffff);
+            border-color: #a7f3d0;
+        }
+
+        /* もっと見るリンクのスタイル */
+        .more-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.25rem;
+            color: rgb(var(--theme-accent));
+            font-weight: 500;
+            transition: all 0.2s;
+        }
+
+        .more-link:hover {
+            gap: 0.5rem;
+        }
+
+        /* エントリーアニメーション */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .fade-in-up {
+            animation: fadeInUp 0.6s ease-out forwards;
+        }
+
+        /* スタッガードアニメーション用 */
+        .stagger-delay-1 { animation-delay: 0.1s; }
+        .stagger-delay-2 { animation-delay: 0.2s; }
+        .stagger-delay-3 { animation-delay: 0.3s; }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container mx-auto px-4 py-8">
+        <!-- Recent Posts -->
+        <div class="home-section fade-in-up mb-8">
+            <h2 class="home-section-title">
+                <svg class="w-6 h-6 text-blue-500" fill="currentColor" viewBox="0 0 24 24">
+                    <path d="M13 9h5.5L13 3.5zM6 2h8l6 6v12a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4c0-1.11.89-2 2-2m9 16v-2H6v2zm3-4v-2H6v2z"/>
+                </svg>
+                <strong>Recent Posts</strong>
+            </h2>
+            <ul class="space-y-4">
+                <li class="post-card fade-in-up stagger-delay-1">
+                    <h3 class="font-semibold text-lg mb-1">
+                        <a href="#" class="animated-link">サンプル記事タイトル 1</a>
+                    </h3>
+                    <p class="text-gray-600 text-sm">2025年6月2日</p>
+                    <p class="text-gray-700 mt-2">これは記事の説明文です。ホームページのデザインをリッチにするためのサンプルです。</p>
+                </li>
+                <li class="post-card fade-in-up stagger-delay-2">
+                    <h3 class="font-semibold text-lg mb-1">
+                        <a href="#" class="animated-link">サンプル記事タイトル 2</a>
+                    </h3>
+                    <p class="text-gray-600 text-sm">2025年6月1日</p>
+                    <p class="text-gray-700 mt-2">もう一つのサンプル記事です。カードデザインとアニメーションを確認できます。</p>
+                </li>
+            </ul>
+            <span class="mt-6 block text-right">
+                <a class="more-link" href="#">
+                    全ての記事を見る
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14 3v2h3.59l-9.83 9.83l1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2z"/>
+                    </svg>
+                </a>
+            </span>
+        </div>
+
+        <!-- note Posts -->
+        <div class="home-section note-card fade-in-up stagger-delay-2 mb-8">
+            <h2 class="home-section-title">
+                <svg class="w-6 h-6 text-green-600" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M20.66 7a1.51 1.51 0 0 0-.55-.55l-.05-.02A1.39 1.39 0 0 0 19.52 6.36h-15A1.49 1.49 0 0 0 3 7.86v8.28a1.49 1.49 0 0 0 1.48 1.5h15a1.49 1.49 0 0 0 1.49-1.5V7.86a1.5 1.5 0 0 0-.31-.86zM12 15.5L5.5 9.09h13z"/>
+                </svg>
+                <strong>note Posts</strong>
+            </h2>
+            <ul class="space-y-3">
+                <li class="p-3 rounded-lg bg-white/50 border border-green-200/50 transition-all duration-200 hover:translate-y-[-2px] hover:shadow-md">
+                    <p class="text-green-600 text-xs">2025年6月2日</p>
+                    <a href="#" class="animated-link font-semibold hover:text-green-600 transition-colors">
+                        noteの記事タイトル
+                    </a>
+                    <q class="line-clamp-2 block text-sm text-gray-600 mt-1 italic">これはnoteの記事の説明文です。</q>
+                </li>
+            </ul>
+            <span class="mt-6 block text-right">
+                <a class="more-link" href="#">
+                    noteの記事をもっと見る
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14 3v2h3.59l-9.83 9.83l1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2z"/>
+                    </svg>
+                </a>
+            </span>
+        </div>
+
+        <!-- Bluesky Posts -->
+        <div class="home-section bluesky-card fade-in-up stagger-delay-3">
+            <h2 class="home-section-title">
+                <svg class="w-6 h-6 text-blue-500" viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M12 10.8c-1.087-2.114-4.046-6.053-6.798-7.995C2.566.944 1.561 1.266.902 1.565C.139 1.908 0 3.08 0 3.768c0 .69.378 5.65.624 6.479c.815 2.736 3.713 3.66 6.383 3.364q.204-.03.415-.056q-.207.033-.415.056c-3.912.58-7.387 2.005-2.83 7.078c5.013 5.19 6.87-1.113 7.823-4.308c.953 3.195 2.05 9.271 7.733 4.308c4.267-4.308 1.172-6.498-2.74-7.078a9 9 0 0 1-.415-.056q.21.026.415.056c2.67.297 5.568-.628 6.383-3.364c.246-.828.624-5.79.624-6.478c0-.69-.139-1.861-.902-2.206c-.659-.298-1.664-.62-4.3 1.24C16.046 4.748 13.087 8.687 12 10.8"/>
+                </svg>
+                <strong>Bluesky Posts</strong>
+            </h2>
+            <ul class="space-y-3">
+                <li class="bg-white/50 border border-blue-200/50 rounded-lg p-4 transition-all duration-200 hover:translate-y-[-2px] hover:shadow-md">
+                    <div class="flex items-start gap-3">
+                        <img src="data:image/svg+xml,%3Csvg width='40' height='40' xmlns='http://www.w3.org/2000/svg'%3E%3Crect width='40' height='40' fill='%23ddd' rx='20'/%3E%3C/svg%3E" alt="Avatar" class="w-10 h-10 rounded-full">
+                        <div class="flex-1">
+                            <div class="flex items-center gap-1 text-sm">
+                                <span class="font-semibold text-blue-900">ユーザー名</span>
+                                <span class="text-blue-600">@handle</span>
+                                <span class="text-blue-500 text-xs ml-auto">2025年6月2日 18:00</span>
+                            </div>
+                            <div class="mt-2 text-sm">これはBlueskyの投稿サンプルです。リッチなデザインになっています。</div>
+                            <a href="#" class="mt-3 text-blue-600 text-xs inline-flex items-center hover:gap-2 transition-all duration-200">
+                                <svg class="w-3 h-3 mr-1" fill="currentColor" viewBox="0 0 24 24">
+                                    <path d="M19 3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V5a2 2 0 0 0-2-2m-5.06 11.81L11.73 17c-.65.67-1.51 1-2.37 1S7.64 17.67 7 17c-1.33-1.29-1.33-3.42 0-4.74l1.35-1.36l-.01.6c-.01.5.07 1 .23 1.44l.05.15l-.4.41a1.597 1.597 0 0 0 0 2.28c.61.62 1.67.62 2.28 0l2.2-2.19c.3-.31.48-.72.48-1.15c0-.44-.18-.83-.48-1.14a.87.87 0 0 1 0-1.24c.33-.33.91-.32 1.24 0c.63.64.98 1.48.98 2.38s-.35 1.74-.98 2.37M17 11.74l-1.34 1.36v-.6c.01-.5-.07-1-.23-1.44l-.05-.14l.4-.42a1.597 1.597 0 0 0 0-2.28c-.61-.62-1.68-.61-2.28 0l-2.2 2.2c-.3.3-.48.71-.48 1.14c0 .44.18.83.48 1.14c.17.16.26.38.26.62s-.09.46-.26.62a.86.86 0 0 1-.62.25c-.22 0-.45-.08-.62-.25a3.36 3.36 0 0 1 0-4.75L12.27 7A3.31 3.31 0 0 1 17 7c.65.62 1 1.46 1 2.36s-.35 1.74-1 2.38"/>
+                                </svg>
+                                Blueskyで見る
+                            </a>
+                        </div>
+                    </div>
+                </li>
+            </ul>
+            <span class="mt-6 block text-right">
+                <a class="more-link" href="#">
+                    Blueskyをもっと見る
+                    <svg class="w-4 h-4" fill="currentColor" viewBox="0 0 24 24">
+                        <path d="M14 3v2h3.59l-9.83 9.83l1.41 1.41L19 6.41V10h2V3m-2 16H5V5h7V3H5a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7h-2z"/>
+                    </svg>
+                </a>
+            </span>
+        </div>
+    </div>
+</body>
+</html>
