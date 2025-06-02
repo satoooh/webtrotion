@@ -164,16 +164,17 @@ const plainTextCaption = block.Code?.Caption.map((richText) => richText.PlainTex
 		</div>
 	) : (
 		<div
-			class="code group relative z-0 mb-1 w-full max-w-full text-sm"
+			class="code-block-wrapper group relative z-0 mb-4 w-full max-w-full text-sm"
 			id={setId ? block.Id : undefined}
 		>
 			<div
-				class={`${language === "mermaid" ? "overflow-x-scroll" : "max-h-[340px] overflow-scroll print:max-h-full"} min-w-0`}
+				class={`code-block-container ${language === "mermaid" ? "overflow-x-scroll" : "max-h-[500px] overflow-scroll print:max-h-full"} min-w-0 rounded-lg bg-[#22272e] shadow-lg border border-[#444c56]/30`}
+				data-language={language}
 				{...(language !== "mermaid" && { "data-pagefind-ignore": "all" })}
 			>
 				<div class="flex max-w-full">
 					<button
-						class="copy absolute top-0 right-0 z-10 cursor-pointer border-none p-2 text-gray-500 sm:opacity-100 md:opacity-0 md:transition-opacity md:duration-200 md:group-hover:opacity-100 print:hidden"
+						class="copy-button absolute top-2 right-2 z-10 cursor-pointer border border-[#444c56]/50 rounded-md bg-[#2d333b] p-2 text-gray-400 hover:text-gray-200 hover:bg-[#373e47] transition-all sm:opacity-100 md:opacity-0 md:group-hover:opacity-100 print:hidden"
 						data-code={modifiedCode}
 						aria-label="copy code"
 						onclick="
@@ -192,12 +193,12 @@ const plainTextCaption = block.Code?.Caption.map((richText) => richText.PlainTex
             "
 					>
 						<Icon
-							class="copy-icon-before h-6 w-6"
+							class="copy-icon-before h-5 w-5"
 							name={"clipboard-copy-code"}
 							aria-label="copy code"
 						/>
 						<Icon
-							class="copy-icon-done hidden h-6 w-6"
+							class="copy-icon-done hidden h-5 w-5"
 							name={"clipboard-copy-code-done"}
 							aria-label="copied code"
 						/>
@@ -218,6 +219,117 @@ const plainTextCaption = block.Code?.Caption.map((richText) => richText.PlainTex
 		</div>
 	)
 }
+<style>
+	/* コードブロックの洗練されたスタイル */
+	.code-block-wrapper {
+		position: relative;
+	}
+	
+	.code-block-container {
+		position: relative;
+		transition: all 0.3s ease;
+	}
+	
+	.code-block-container:hover {
+		box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4);
+		border-color: rgba(68, 76, 86, 0.5);
+	}
+	
+	/* コピーボタンのアニメーション */
+	.copy-button {
+		backdrop-filter: blur(8px);
+		transition: all 0.2s ease;
+	}
+	
+	.copy-button:hover {
+		transform: scale(1.05);
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+	}
+	
+	.copy-button:active {
+		transform: scale(0.95);
+	}
+	
+	/* スクロールバーのカスタマイズ */
+	.code-block-container::-webkit-scrollbar {
+		width: 12px;
+		height: 12px;
+	}
+	
+	.code-block-container::-webkit-scrollbar-track {
+		background: rgba(0, 0, 0, 0.2);
+		border-radius: 6px;
+	}
+	
+	.code-block-container::-webkit-scrollbar-thumb {
+		background: rgba(255, 255, 255, 0.1);
+		border-radius: 6px;
+		transition: background 0.3s ease;
+	}
+	
+	.code-block-container::-webkit-scrollbar-thumb:hover {
+		background: rgba(255, 255, 255, 0.2);
+	}
+	
+	/* 言語表示バッジ（オプション） */
+	.code-block-container::before {
+		content: attr(data-language);
+		position: absolute;
+		top: 0.5rem;
+		left: 1rem;
+		padding: 0.125rem 0.5rem;
+		background: rgba(255, 255, 255, 0.1);
+		color: rgba(255, 255, 255, 0.6);
+		font-size: 0.75rem;
+		border-radius: 4px;
+		font-family: monospace;
+		z-index: 1;
+		pointer-events: none;
+		opacity: 0;
+		transition: opacity 0.3s ease;
+	}
+	
+	.code-block-container:hover::before {
+		opacity: 1;
+	}
+	
+	/* コード内の行番号スタイル（shikiで生成される場合） */
+	.code-block-container .line {
+		transition: background-color 0.2s ease;
+	}
+	
+	.code-block-container .line:hover {
+		background-color: rgba(255, 255, 255, 0.05);
+	}
+	
+	/* ダークモード対応 */
+	:global(.dark) .code-block-container {
+		background: #1c2128;
+		border-color: rgba(68, 76, 86, 0.5);
+	}
+	
+	:global(.dark) .copy-button {
+		background: #2d333b;
+		border-color: rgba(68, 76, 86, 0.7);
+	}
+	
+	:global(.dark) .copy-button:hover {
+		background: #373e47;
+		border-color: rgba(68, 76, 86, 0.9);
+	}
+	
+	/* Mermaidダイアグラムのスタイル */
+	.mermaid {
+		background: #ffffff;
+		border-radius: 8px;
+	}
+	
+	:global(.dark) .mermaid {
+		background: #1c2128;
+		filter: invert(0.9) hue-rotate(180deg);
+	}
+</style>
+
 <script>
 	import mermaid from "mermaid";
 	mermaid.initialize({ startOnLoad: true, theme: "base" });
