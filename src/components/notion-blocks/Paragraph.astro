@@ -18,9 +18,9 @@ const Tag = hasChildren && renderChildren ? "div" : "p";
 
 <Tag
 	class:list={[
-		"my-4 min-h-7 text-[1.05rem] leading-[2.05] tracking-[0.025em] text-textColor",
+		"paragraph my-6 min-h-7 text-[1.05rem] leading-[1.8] tracking-[0.01em] text-textColor transition-colors duration-300",
 		{
-			[`${getNotionColorToTailwindColor(block.Paragraph.Color)} rounded-sm px-1`]:
+			[`${getNotionColorToTailwindColor(block.Paragraph.Color)} rounded-sm px-3 py-1`]:
 				block.Paragraph.Color &&
 				!["default", "default_background", "default-background"].includes(block.Paragraph.Color),
 		},
@@ -41,3 +41,64 @@ const Tag = hasChildren && renderChildren ? "div" : "p";
 		)
 	}
 </Tag>
+
+<style>
+	/* 段落の読みやすさ向上 */
+	.paragraph {
+		font-feature-settings: "kern" 1, "liga" 1;
+		text-rendering: optimizeLegibility;
+		-webkit-font-smoothing: antialiased;
+		-moz-osx-font-smoothing: grayscale;
+	}
+	
+	/* 段落の最初の文字を強調（オプション） */
+	.paragraph:first-of-type::first-letter {
+		font-size: 1.4em;
+		line-height: 1;
+		font-weight: 600;
+		color: rgb(var(--theme-accent));
+		float: left;
+		margin-right: 0.1em;
+		margin-top: 0.05em;
+	}
+	
+	/* リンクのホバー効果 */
+	.paragraph :global(a) {
+		position: relative;
+		transition: color 0.3s ease;
+	}
+	
+	.paragraph :global(a)::after {
+		content: '';
+		position: absolute;
+		bottom: -2px;
+		left: 0;
+		width: 0;
+		height: 2px;
+		background: rgb(var(--theme-accent));
+		transition: width 0.3s ease;
+	}
+	
+	.paragraph :global(a:hover)::after {
+		width: 100%;
+	}
+	
+	/* ダークモード対応 */
+	:global(.dark) .paragraph {
+		color: rgba(255, 255, 255, 0.9);
+	}
+	
+	/* モバイル対応 */
+	@media (max-width: 640px) {
+		.paragraph {
+			font-size: 0.975rem;
+			line-height: 1.75;
+			margin-top: 1rem;
+			margin-bottom: 1rem;
+		}
+		
+		.paragraph:first-of-type::first-letter {
+			font-size: 1.3em;
+		}
+	}
+</style>
