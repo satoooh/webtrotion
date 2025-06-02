@@ -54,16 +54,6 @@ const Tag = hasChildren && renderChildren ? "div" : "p";
 		-moz-osx-font-smoothing: grayscale;
 	}
 	
-	/* 段落の最初の文字を強調（オプション） */
-	.paragraph:first-of-type::first-letter {
-		font-size: 1.4em;
-		line-height: 1;
-		font-weight: 600;
-		color: rgb(var(--theme-accent));
-		float: left;
-		margin-right: 0.1em;
-		margin-top: 0.05em;
-	}
 	
 	/* リンクのホバー効果 */
 	.paragraph :global(a) {
