@@ -9,7 +9,7 @@ interface Props {
 const { images } = Astro.props;
 ---
 
-<div class="bsky-image-grid-container">
+<div class="bsky-image-grid-container bsky-image-grid-container--compact">
 	<div class:list={["bsky-image-grid", `bsky-image-grid--${images.length}`]}>
 		{
 			images.map((image) => (
@@ -72,5 +72,26 @@ const { images } = Astro.props;
 	.bsky-image-grid--4 {
 		grid-template-columns: repeat(2, 1fr);
 		grid-template-rows: repeat(2, 1fr);
+	}
+
+	/* Compact styles for home page */
+	.bsky-image-grid-container--compact {
+		aspect-ratio: unset;
+		max-height: 12rem; /* 192px */
+	}
+	
+	@media (min-width: 640px) {
+		.bsky-image-grid-container--compact {
+			max-height: 16rem; /* 256px */
+		}
+	}
+
+	.bsky-image-grid-container--compact .bsky-image-grid {
+		height: auto;
+		max-height: 100%;
+	}
+
+	.bsky-image-grid-container--compact .bsky-image-grid-item {
+		aspect-ratio: 16/9;
 	}
 </style>

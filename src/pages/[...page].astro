@@ -339,8 +339,10 @@ if (pageFound && page.Slug === HOME_PAGE_SLUG && RECENT_POSTS_ON_HOME_PAGE) {
 																						</div>
 																						<div class="mt-1 text-sm line-clamp-3" set:html={postText} />
 																					{post.embed && (
-																							<div class="mt-2 max-w-full">
-																									<Embed embed={post.embed} postUrl={postUrl} compact={true} />
+																							<div class="mt-2 max-w-full overflow-hidden rounded-md">
+																									<div class="max-h-48 sm:max-h-64 overflow-hidden">
+																											<Embed embed={post.embed} postUrl={postUrl} compact={true} />
+																									</div>
 																							</div>
 																					)}
 																						<a href={postUrl} target="_blank" rel="noopener noreferrer" class="mt-2 text-[rgb(var(--theme-accent))] text-xs inline-flex items-center">
