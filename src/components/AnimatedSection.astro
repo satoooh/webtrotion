@@ -1,0 +1,107 @@
+---
+export interface Props {
+	class?: string;
+	delay?: number;
+	animation?: 'fadeIn' | 'fadeInUp' | 'fadeInLeft' | 'fadeInRight' | 'scaleIn';
+}
+
+const { class: className = '', delay = 0, animation = 'fadeInUp' } = Astro.props;
+---
+
+<div
+	class={`animated-section ${animation} ${className}`}
+	data-delay={delay}
+	data-animation={animation}
+>
+	<slot />
+</div>
+
+<style>
+	/* 初期状態 */
+	.animated-section {
+		opacity: 0.01; /* 完全に透明ではなく、わずかに見える状態 */
+		transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+	}
+	
+	.animated-section.fadeIn {
+		transform: none;
+	}
+	
+	.animated-section.fadeInUp {
+		transform: translateY(20px);
+	}
+	
+	.animated-section.fadeInLeft {
+		transform: translateX(20px);
+	}
+	
+	.animated-section.fadeInRight {
+		transform: translateX(-20px);
+	}
+	
+	.animated-section.scaleIn {
+		transform: scale(0.97);
+	}
+	
+	/* アニメーション適用後 */
+	.animated-section.animate-in {
+		opacity: 1;
+		transform: none;
+	}
+	
+	/* リデュースモーション対応 */
+	@media (prefers-reduced-motion: reduce) {
+		.animated-section {
+			transition: none;
+			opacity: 1;
+			transform: none;
+		}
+	}
+</style>
+
+<script>
+	// Intersection Observer for scroll animations
+	const observerOptions = {
+		root: null,
+		rootMargin: '0px 0px -50px 0px',
+		threshold: 0.1
+	};
+	
+	const animateOnScroll = (entries: IntersectionObserverEntry[], observer: IntersectionObserver) => {
+		entries.forEach(entry => {
+			if (entry.isIntersecting) {
+				const element = entry.target as HTMLElement;
+				const delay = parseInt(element.dataset.delay || '0');
+				
+				setTimeout(() => {
+					element.classList.add('animate-in');
+				}, delay);
+				
+				observer.unobserve(element);
+			}
+		});
+	};
+	
+	// Initialize observer when DOM is ready
+	document.addEventListener('DOMContentLoaded', () => {
+		const observer = new IntersectionObserver(animateOnScroll, observerOptions);
+		const elements = document.querySelectorAll('.animated-section');
+		
+		elements.forEach(element => {
+			// Check if element is already in viewport on page load
+			const rect = element.getBoundingClientRect();
+			const isInViewport = rect.top < window.innerHeight && rect.bottom > 0;
+			
+			if (isInViewport) {
+				// Element is already visible, animate it immediately
+				const delay = parseInt((element as HTMLElement).dataset.delay || '0');
+				setTimeout(() => {
+					element.classList.add('animate-in');
+				}, delay);
+			} else {
+				// Element is not visible, observe it for scroll animation
+				observer.observe(element);
+			}
+		});
+	});
+</script>

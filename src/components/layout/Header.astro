@@ -5,7 +5,6 @@ import { siteInfo } from "@/site.config";
 import { filePath, getNavLink } from "@/lib/blog-helpers";
 import Icon from "@/components/Icon.astro";
 import ThemeIcon from "@/components/ThemeIcon.astro";
-
 const menuLinks = await getMenu();
 
 const url = new URL(Astro.request.url);

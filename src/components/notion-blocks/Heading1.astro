@@ -4,6 +4,7 @@ import { buildHeadingId } from "@/lib/blog-helpers.ts";
 import RichText from "@/components/notion-blocks/RichText.astro";
 import NotionBlocks from "@/components/NotionBlocks.astro";
 import Icon from "@/components/Icon.astro";
+import AnimatedSection from "@/components/AnimatedSection.astro";
 
 export interface Props {
 	block: interfaces.Block;
@@ -16,6 +17,7 @@ const { block, renderChildren = true, setId = true } = Astro.props;
 const id = buildHeadingId(block.Heading1);
 ---
 
+<AnimatedSection animation="fadeInLeft" delay={50}>
 {
 	block.Heading1.IsToggleable ? (
 		<details class="toggle mt-8 mb-0">
@@ -73,6 +75,7 @@ const id = buildHeadingId(block.Heading1);
 		</h2>
 	)
 }
+</AnimatedSection>
 
 <style>
 	/* 見出しの洗練されたデザイン */
