@@ -3,7 +3,6 @@ import { ENABLE_LIGHTBOX } from "@/constants.ts";
 import * as interfaces from "@/lib/interfaces.ts";
 import { filePath, getFirstImage } from "@/lib/blog-helpers";
 import Caption from "@/components/notion-blocks/Caption.astro";
-import AnimatedSection from "@/components/AnimatedSection.astro";
 
 export interface Props {
 	block: interfaces.Block;
@@ -24,45 +23,43 @@ const plainTextCaption = block.NImage?.Caption.map((richText) => richText.PlainT
 
 {
 	image && (
-		<AnimatedSection animation="scaleIn" delay={100}>
-			<figure class="mx-auto mt-1 max-w-full" id={setId ? block.Id : undefined}>
-				<div class="mx-auto min-w-0">
-				{ENABLE_LIGHTBOX ? (
-					<>
-						{/* デスクトップ用（ライトボックス有効） */}
-						<a
-							data-type="image"
-							href={image}
-							class="mediaglightbox no-rss hidden sm:block"
-							data-description={plainTextCaption}
-							aria-label={`Open image with alt ${plainTextCaption} in lightbox`}
-						>
-							<img
-								class="imagemedia block max-w-full rounded-md"
-								loading={getFirstImage() && setId ? "eager" : "lazy"}
-								src={image}
-								alt={plainTextCaption}
-							/>
-						</a>
-						{/* モバイル用（ライトボックス無効） */}
+		<figure class="mx-auto mt-1 max-w-full" id={setId ? block.Id : undefined}>
+			<div class="mx-auto min-w-0">
+			{ENABLE_LIGHTBOX ? (
+				<>
+					{/* デスクトップ用（ライトボックス有効） */}
+					<a
+						data-type="image"
+						href={image}
+						class="mediaglightbox no-rss hidden sm:block"
+						data-description={plainTextCaption}
+						aria-label={`Open image with alt ${plainTextCaption} in lightbox`}
+					>
 						<img
-							class="imagemedia block max-w-full rounded-md border border-black/10 sm:hidden"
+							class="imagemedia block max-w-full rounded-md"
+							loading={getFirstImage() && setId ? "eager" : "lazy"}
 							src={image}
-							loading={getFirstImage() ? "eager" : "lazy"}
 							alt={plainTextCaption}
 						/>
-					</>
-				) : (
+					</a>
+					{/* モバイル用（ライトボックス無効） */}
 					<img
-						class="imagemedia block max-w-full rounded-md border border-black/10"
+						class="imagemedia block max-w-full rounded-md border border-black/10 sm:hidden"
 						src={image}
 						loading={getFirstImage() ? "eager" : "lazy"}
 						alt={plainTextCaption}
 					/>
-				)}
-			</div>
-			<Caption richTexts={block.NImage.Caption} block={block} as="figcaption" />
-			</figure>
-		</AnimatedSection>
+				</>
+			) : (
+				<img
+					class="imagemedia block max-w-full rounded-md border border-black/10"
+					src={image}
+					loading={getFirstImage() ? "eager" : "lazy"}
+					alt={plainTextCaption}
+				/>
+			)}
+		</div>
+		<Caption richTexts={block.NImage.Caption} block={block} as="figcaption" />
+		</figure>
 	)
 }

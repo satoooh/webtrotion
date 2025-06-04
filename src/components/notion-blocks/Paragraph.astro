@@ -3,7 +3,6 @@ import * as interfaces from "@/lib/interfaces.ts";
 import { getNotionColorToTailwindColor } from "@/lib/style-helpers.ts";
 import RichText from "@/components/notion-blocks/RichText.astro";
 import NotionBlocks from "@/components/NotionBlocks.astro";
-import AnimatedSection from "@/components/AnimatedSection.astro";
 
 export interface Props {
 	block: interfaces.Block;
@@ -17,33 +16,31 @@ const hasChildren = block.Paragraph.Children && block.Paragraph.Children.length 
 const Tag = hasChildren && renderChildren ? "div" : "p";
 ---
 
-<AnimatedSection animation="fadeIn" delay={50}>
-	<Tag
-		class:list={[
-			"paragraph my-6 min-h-7 text-[1.05rem] leading-[1.8] tracking-[0.01em] text-textColor transition-colors duration-300",
-			{
-				[`${getNotionColorToTailwindColor(block.Paragraph.Color)} rounded-sm px-3 py-1`]:
-					block.Paragraph.Color &&
-					!["default", "default_background", "default-background"].includes(block.Paragraph.Color),
-			},
-		]}
-		id={setId ? block.Id : undefined}
-	>
-		{block.Paragraph.RichTexts.map((richText) => <RichText richText={richText} blockID={block.Id} />)}
-		{block.Paragraph.RichTexts.length === 0 && <br />}
+<Tag
+	class:list={[
+		"paragraph my-6 min-h-7 text-[1.05rem] leading-[1.8] tracking-[0.01em] text-textColor transition-colors duration-300",
 		{
-			hasChildren && renderChildren && (
-				<div class="pl-6">
-					<NotionBlocks
-						blocks={block.Paragraph.Children}
-						setId={setId}
-						renderChildren={renderChildren}
-					/>
-				</div>
-			)
-		}
-	</Tag>
-</AnimatedSection>
+			[`${getNotionColorToTailwindColor(block.Paragraph.Color)} rounded-sm px-3 py-1`]:
+				block.Paragraph.Color &&
+				!["default", "default_background", "default-background"].includes(block.Paragraph.Color),
+		},
+	]}
+	id={setId ? block.Id : undefined}
+>
+	{block.Paragraph.RichTexts.map((richText) => <RichText richText={richText} blockID={block.Id} />)}
+	{block.Paragraph.RichTexts.length === 0 && <br />}
+	{
+		hasChildren && renderChildren && (
+			<div class="pl-6">
+				<NotionBlocks
+					blocks={block.Paragraph.Children}
+					setId={setId}
+					renderChildren={renderChildren}
+				/>
+			</div>
+		)
+	}
+</Tag>
 
 <style>
 	/* 段落の読みやすさ向上 */
