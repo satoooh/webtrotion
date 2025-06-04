@@ -342,6 +342,14 @@ if (pageFound && page.Slug === HOME_PAGE_SLUG && RECENT_POSTS_ON_HOME_PAGE) {
   margin-top: 0.25rem;
 }
 
+/* note記事の説明文を3行に制限 */
+.note-description {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
 
 /* レスポンシブ調整 */
 @media (max-width: 640px) {
@@ -449,7 +457,7 @@ if (pageFound && page.Slug === HOME_PAGE_SLUG && RECENT_POSTS_ON_HOME_PAGE) {
 																				</a>
 																		</div>
 																		{article.description && (
-																				<q class="line-clamp-2 block text-sm text-[rgb(var(--theme-text)_/_0.8)] mt-1 italic">{article.description}</q>
+																				<q class="note-description block text-sm text-[rgb(var(--theme-text)_/_0.8)] mt-1 italic">{article.description}</q>
 																		)}
 																</AnimatedSection>
 														</li>

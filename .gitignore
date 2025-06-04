@@ -32,3 +32,5 @@ tmp/*
 !tmp/.gitkeep
 src/styles/global.css
 buildcache/
+
+**/.claude/settings.local.json
