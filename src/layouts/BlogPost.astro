@@ -36,23 +36,27 @@ const articleDate = new Date(post.Date).toISOString();
 	meta={{ title: post.Title, description: post.Excerpt, articleDate, ogImage: socialImage }}
 >
 	<div class="max-w-[708px] sm:mr-20 print:mr-auto print:max-w-full">
-		<article class="break-words" data-pagefind-body>
-			<AnimatedSection animation="fadeIn">
+		<AnimatedSection animation="fadeIn">
+			<article class="break-words" data-pagefind-body>
 				<div id="blog-hero"><BlogHero post={post} /></div>
-			</AnimatedSection>
-			<div class="mt-8">
-				<slot />
-				{/* Post body content */}
-				<hr class="divider bg-accent/30 mx-auto my-4 h-0.5 w-full rounded-sm border-none" />
-				{REFERENCES && <ReferencesSection post={post} shouldUseCache={shouldUseCache} />}
-			</div>
-		</article>
+				<AnimatedSection class="mt-8" animation="fadeInUp" delay={100}>
+					<slot />
+					{/* Post body content */}
+					<hr class="divider bg-accent/30 mx-auto my-4 h-0.5 w-full rounded-sm border-none" />
+					{REFERENCES && <ReferencesSection post={post} shouldUseCache={shouldUseCache} />}
+				</AnimatedSection>
+			</article>
+		</AnimatedSection>
 		{!!headings.length && <TOC headings={headings} />}
 	</div>
 	<div class="max-w-[708px] sm:mr-20 print:hidden">
 		<aside class="" data-pagefind-ignore="all">
-			<WebMentions />
-			<PostComments post={post} />
+			<AnimatedSection animation="fadeInUp" delay={200}>
+				<WebMentions />
+			</AnimatedSection>
+			<AnimatedSection animation="fadeInUp" delay={300}>
+				<PostComments post={post} />
+			</AnimatedSection>
 		</aside>
 	</div>
 	<button
